@@ -10,7 +10,7 @@ from keras.layers import Dense
 from keras.layers import LSTM
 from keras.layers import Embedding
 from keras.layers import Dropout
-from keras.layers.merge import add
+from keras.layers import Add
 from keras.callbacks import ModelCheckpoint
 
 
@@ -84,6 +84,7 @@ def max_length(descriptions):
     lines = to_lines(descriptions)
     return max(len(d.split()) for d in lines)
 
+# Defining a Model
 
 def define_model(vocab_size, max_length):
     inputs1 = Input(shape=(4096,))
@@ -95,7 +96,7 @@ def define_model(vocab_size, max_length):
     se2 = Dropout(0.5)(se1)
     se3 = LSTM(256)(se2)
 
-    decoder1 = add([fe2, se3])
+    decoder1 = Add([fe2, se3])
     decoder2 = Dense(256, activation='relu')(decoder1)
     outputs = Dense(vocab_size, activation='softmax')(decoder2)
 
@@ -106,9 +107,6 @@ def define_model(vocab_size, max_length):
     # plot_model(model,to_file='model.png',show_shapes=True)
     return model
 
-###################################
-
-
 def data_generator(descriptions, photos, tokenizer, max_length):
     while 1:
         for key, desc_list in descriptions.items():
@@ -116,9 +114,6 @@ def data_generator(descriptions, photos, tokenizer, max_length):
             in_img, in_seq, out_word = create_sequences(
                 tokenizer, max_length, desc_list, photo)
             yield [[in_img, in_seq], out_word]
-
-##################################
-
 
 filename = 'Flickr_30k.trainImages.txt'
 train = load_set(filename)
@@ -137,6 +132,7 @@ print("maxlen: ", max_length)
 model = define_model(vocab_size, max_length)
 epochs = 500
 steps = len(train_descriptions)/32
+
 for i in range(epochs):
     generator = data_generator(
         train_descriptions, train_features, tokenizer, max_length)

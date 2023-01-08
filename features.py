@@ -6,6 +6,7 @@ from keras.preprocessing.image import img_to_array
 from keras.applications.vgg16 import preprocess_input
 from keras.models import Model
 
+# Preparing Photo Data
 
 def extract_features(directory):
     model = VGG16()

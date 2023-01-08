@@ -1,5 +1,6 @@
 import string
 
+# Prepare Text Data
 
 def load_doc(filename):
     file = open(filename, 'r')
