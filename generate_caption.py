@@ -10,6 +10,7 @@ from keras.preprocessing.image import img_to_array
 from keras.applications.vgg16 import preprocess_input
 from keras.models import Model
 from keras.models import load_model
+from nltk.translate.bleu_score import corpus_bleu
 
 # Evaluate Model
  
@@ -43,6 +44,21 @@ def generate_desc(model, tokenizer, photo, max_length):
 		if word == 'endseq':
 			break
 	return in_text
+
+def evaluate_model(model, descriptions, photos, tokenizer, max_length):
+	actual, predicted = list(), list()
+	for key, desc_list in descriptions.items():
+		yhat = generate_desc(model, tokenizer, photos[key], max_length)
+		references = [d.split() for d in desc_list]
+		actual.append(references)
+		predicted.append(yhat.split())
+
+	# calculate BLEU score
+	print('BLEU-1: %f' % corpus_bleu(actual, predicted, weights=(1.0, 0, 0, 0)))
+	print('BLEU-2: %f' % corpus_bleu(actual, predicted, weights=(0.5, 0.5, 0, 0)))
+	print('BLEU-3: %f' % corpus_bleu(actual, predicted, weights=(0.3, 0.3, 0.3, 0)))
+	print('BLEU-4: %f' % corpus_bleu(actual, predicted, weights=(0.25, 0.25, 0.25, 0.25)))
+
 
 def generate_captions(photo_path):
         tokenizer = load(open('tokenizer.pkl', 'rb'))
