@@ -7,13 +7,13 @@ To create a Python virtual environment using the `venv` module, you can use the 
 2. Run the following command to create the virtual environment:
 
 ```shell
-python3 -m venv oculight_model
+python3 -m venv oculight_env
 ```
 
 3. Activate the virtual environment using the following command:
 
 ```shell
-source oculight_model/bin/activate
+source oculight_env/bin/activate
 ```
 
 4. You can now install packages and run Python scripts in the virtual environment.
