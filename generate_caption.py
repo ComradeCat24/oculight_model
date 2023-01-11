@@ -61,10 +61,10 @@ def evaluate_model(model, descriptions, photos, tokenizer, max_length):
 
 
 def generate_captions(photo_path):
-        tokenizer = load(open('tokenizer.pkl', 'rb'))
-        max_length = 34
-        model = load_model('model.h5')
-        photo = extract_features(photo_path)
-        description = generate_desc(model, tokenizer, photo, max_length)
-        description = description[9:-6]
-        return description
+	tokenizer = load(open('tokenizer.pkl', 'rb'))
+	max_length = 34
+	model = load_model('model.h5')
+	photo = extract_features(photo_path)
+	description = generate_desc(model, tokenizer, photo, max_length)
+	description = description[9:-6]
+	return description
