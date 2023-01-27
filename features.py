@@ -15,15 +15,16 @@ def extract_features(directory):
 
     features = {}
 
-    datagen = ImageDataGenerator(preprocessing_function=preprocess_input)
+    # datagen = ImageDataGenerator(preprocessing_function=preprocess_input)
+    datagen = ImageDataGenerator(rescale=1. / 255)
 
     # Generate batches of image data from the specified directory
     data_gen = datagen.flow_from_directory(
-        directory, target_size=(150, 150), batch_size=32, class_mode=None)
+        directory, target_size=(150, 150), class_mode=None)
 
     # Extract features from each batch
     for features_batch in model.predict(data_gen, verbose=1):
-        for i in range(len(data_gen.filenames)):
+        for i in range(min(len(data_gen.filenames), len(features_batch))):
             image_id = data_gen.filenames[i].split('.')[0]
             features[image_id] = features_batch[i]
             print('>%s' % data_gen.filenames[i])
