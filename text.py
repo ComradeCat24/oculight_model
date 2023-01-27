@@ -5,8 +5,12 @@ def load_doc(filename):
     """
     Loads a text file and returns its content as a string.
     """
-    with open(filename, 'r') as file:
-        text = file.read()
+    try:
+        with open(filename, 'r', encoding='utf-8-sig') as file:
+            text = file.read()
+    except:
+        print("Error occured while reading the file")
+        return None
     return text
 
 
