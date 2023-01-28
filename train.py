@@ -1,3 +1,7 @@
+from keras.callbacks import ModelCheckpoint, EarlyStopping
+import random
+from keras.callbacks import EarlyStopping
+import numpy as np
 import json
 import os
 from collections import defaultdict
@@ -102,24 +106,21 @@ def max_length(descriptions):
 
 # create sequences of images, input sequences and output words for an image
 def create_sequences(tokenizer, max_length, desc_list, photo, vocab_size):
-    X1, X2, y = list(), list(), list()
-    # walk through each description for the image
-    for desc in desc_list:
-        # encode the sequence
-        seq = tokenizer.texts_to_sequences([desc])[0]
-        # split one sequence into multiple X,y pairs
-        for i in range(1, len(seq)):
-            # split into input and output pair
-            in_seq, out_seq = seq[:i], seq[i]
-            # pad input sequence
-            in_seq = pad_sequences([in_seq], maxlen=max_length)[0]
-            # encode output sequence
-            out_seq = to_categorical([out_seq], num_classes=vocab_size)[0]
-            # store
-            X1.append(photo)
-            X2.append(in_seq)
-            y.append(out_seq)
-    return array(X1), array(X2), array(y)
+    X1, X2, y = [], [], []
+    # encode the sequence
+    seq = tokenizer.texts_to_sequences(desc_list)
+    # use list comprehension to iterate over sequences and descriptions
+    for i in range(1, len(seq[0]) + 1):
+        in_seq = [s[:i] for s in seq]
+        in_seq = pad_sequences(in_seq, maxlen=max_length)
+        out_seq = [s[i:] for s in seq]
+        out_seq = to_categorical(out_seq, num_classes=vocab_size)
+        # store
+        X1.append(np.array([photo] * len(in_seq)))
+        X2.append(np.array(in_seq))
+        y.append(np.array(out_seq))
+
+    return np.array(X1), np.array(X2), np.array(y)
 
 
 # define the captioning model
@@ -127,36 +128,56 @@ def define_model(vocab_size, max_length):
     # feature extractor model
     inputs1 = Input(shape=(4096,))
     fe1 = Dropout(0.5)(inputs1)
-    fe2 = Dense(256, activation='relu')(fe1)
+    fe2 = Dense(256, activation='relu', kernel_regularizer=l2(0.01))(fe1)
+
     # sequence model
     inputs2 = Input(shape=(max_length,))
     se1 = Embedding(vocab_size, 256, mask_zero=True)(inputs2)
     se2 = Dropout(0.5)(se1)
     se3 = LSTM(256)(se2)
+
     # decoder model
     decoder1 = Add([fe2, se3])
-    decoder2 = Dense(256, activation='relu')(decoder1)
+    decoder2 = Dense(256, activation='relu',
+                     kernel_regularizer=l2(0.01))(decoder1)
+
     outputs = Dense(vocab_size, activation='softmax')(decoder2)
+
     # tie it together [image, seq] [word]
     model = Model(inputs=[inputs1, inputs2], outputs=outputs)
+
     # compile model
     model.compile(loss='categorical_crossentropy', optimizer='adam')
+
     # summarize model
     model.summary()
     plot_model(model, to_file='model.png', show_shapes=True)
+
+    # earlystop = EarlyStopping(
+    #     monitor='val_loss', min_delta=0, patience=3, verbose=0, mode='auto')
+    # callbacks_list = [earlystop]
+
     return model
 
 
 # data generator, intended to be used in a call to model.fit_generator()
-def data_generator(descriptions, photos, tokenizer, max_length, vocab_size):
-    # loop for ever over images
-    while 1:
-        for key, desc_list in descriptions.items():
-            # retrieve the photo feature
-            photo = photos[key][0]
-            in_img, in_seq, out_word = create_sequences(
-                tokenizer, max_length, desc_list, photo, vocab_size)
-            yield [in_img, in_seq], out_word
+def data_generator(descriptions, photos, tokenizer, max_length, vocab_size, n_iterations=None):
+    keys = list(descriptions.keys())
+    i = 0
+    while True:
+        if n_iterations and i >= n_iterations:
+            break
+        random.shuffle(keys)
+        for key in keys:
+            try:
+                # retrieve the photo feature
+                photo = photos[key][0]
+                in_img, in_seq, out_word = create_sequences(
+                    tokenizer, max_length, descriptions[key], photo, vocab_size)
+                yield [in_img, in_seq], out_word
+                i += 1
+            except Exception as e:
+                print(f"Error in iteration {i} with key {key} : {e}")
 
 
 # load training dataset (6K)
@@ -184,14 +205,27 @@ print('Description Length: %d' % max_length)
 
 # define the model
 model = define_model(vocab_size, max_length)
+
 # train the model, run epochs manually and save after each epoch
 epochs = 20
-steps = len(train_descriptions)
-for i in range(epochs):
-    # create the data generator
-    generator = data_generator(
-        train_descriptions, train_features, tokenizer, max_length, vocab_size)
-    # fit for one epoch
-    model.fit_generator(generator, epochs=1, steps_per_epoch=steps, verbose=1)
-    # save model
-    model.save('model_' + str(i) + '.h5')
+steps_per_epoch = len(train_descriptions)
+
+# create the data generator
+train_generator = data_generator(
+    train_descriptions, train_features, tokenizer, max_length, vocab_size)
+
+# create callbacks list
+callbacks_list = [
+    EarlyStopping(monitor='val_loss', patience=3),
+    ModelCheckpoint(
+        filepath='model_checkpoints/model_{epoch:02d}.h5', save_best_only=True, monitor='val_loss')
+]
+
+# fit the model
+model.fit_generator(
+    generator=train_generator,
+    steps_per_epoch=steps_per_epoch,
+    epochs=epochs,
+    verbose=1,
+    callbacks=callbacks_list,
+)
