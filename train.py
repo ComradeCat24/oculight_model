@@ -174,7 +174,7 @@ def data_generator(descriptions, photos, tokenizer, max_length, vocab_size, n_it
 # train dataset
 
 # load training dataset
-train_filename = 'dataset/flickr_30k.trainImages.txt'
+train_filename = 'dataset/splits/captions.trainImages.txt'
 
 train = load_set(train_filename)
 print('Dataset: %d' % len(train))
