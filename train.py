@@ -1,24 +1,16 @@
-from keras.callbacks import ModelCheckpoint, EarlyStopping
-import random
-from keras.callbacks import EarlyStopping
-import numpy as np
-import json
 import os
-from collections import defaultdict
+import json
+import random
+import numpy as np
 from numpy import array
 from pickle import load
+from collections import defaultdict
 from keras.preprocessing.text import Tokenizer
 from keras.preprocessing.sequence import pad_sequences
-from keras.utils import to_categorical
-from keras.utils import plot_model
+from keras.utils import to_categorical, plot_model
 from keras.models import Model
-from keras.layers import Input
-from keras.layers import Dense
-from keras.layers import LSTM
-from keras.layers import Embedding
-from keras.layers import Dropout
-from keras.layers import Add
-from keras.callbacks import ModelCheckpoint
+from keras.layers import Input, Dense, LSTM, Embedding, Dropout, Add
+from keras.callbacks import ModelCheckpoint, EarlyStopping
 
 
 # load doc into memory
@@ -180,19 +172,17 @@ def data_generator(descriptions, photos, tokenizer, max_length, vocab_size, n_it
                 print(f"Error in iteration {i} with key {key} : {e}")
 
 
-# load training dataset (6K)
-filename = 'Flickr8k_text/Flickr_8k.trainImages.txt'
+# train dataset
 
-train = load_set(filename)
+# load training dataset
+train_filename = 'dataset/flickr_30k.trainImages.txt'
+
+train = load_set(train_filename)
 print('Dataset: %d' % len(train))
 
 # descriptions
 train_descriptions = load_clean_descriptions('descriptions.txt', train)
 print('Descriptions: train=%d' % len(train_descriptions))
-
-# photo features
-train_features = load_photo_features('features.pkl', train)
-print('Photos: train=%d' % len(train_features))
 
 # prepare tokenizer
 tokenizer = create_tokenizer(train_descriptions)
@@ -202,6 +192,31 @@ print('Vocabulary Size: %d' % vocab_size)
 # determine the maximum sequence length
 max_length = max_length(train_descriptions)
 print('Description Length: %d' % max_length)
+
+# photo features
+train_features = load_photo_features('features.pickle', train)
+print('Photos: train=%d' % len(train_features))
+
+""" 
+# dev dataset
+
+# load testing dataset
+test_filename = 'dataset/flickr_30k.testImages.txt'
+
+test = load_set(test_filename)
+print('Dataset: %d' % len(test))
+
+# descriptions
+test_descriptions = load_clean_descriptions('descriptions.txt', test)
+print('Descriptions: test=%d' % len(test_descriptions))
+
+# photo features
+test_features = load_photo_features('features.pickle', test)
+print('Photos: test=%d' % len(test_features))
+"""
+
+
+# fit model
 
 # define the model
 model = define_model(vocab_size, max_length)
