@@ -1,8 +1,6 @@
 import os
-import json
 import random
 import numpy as np
-from numpy import array
 from pickle import load
 from collections import defaultdict
 from keras.preprocessing.text import Tokenizer
@@ -11,6 +9,7 @@ from keras.utils import to_categorical, plot_model
 from keras.models import Model
 from keras.layers import Input, Dense, LSTM, Embedding, Dropout, Add
 from keras.callbacks import ModelCheckpoint, EarlyStopping
+from keras.regularizers import l2
 
 
 # load doc into memory
@@ -64,7 +63,7 @@ def load_clean_descriptions(filename, dataset):
 def load_photo_features(filename, dataset):
     try:
         with open(filename, 'r') as file:
-            all_features = json.load(file)
+            all_features = load(file)
     except FileNotFoundError:
         print(f"{filename} not found.")
         return None
@@ -196,24 +195,6 @@ print('Description Length: %d' % max_length)
 # photo features
 train_features = load_photo_features('features.pickle', train)
 print('Photos: train=%d' % len(train_features))
-
-""" 
-# dev dataset
-
-# load testing dataset
-test_filename = 'dataset/flickr_30k.testImages.txt'
-
-test = load_set(test_filename)
-print('Dataset: %d' % len(test))
-
-# descriptions
-test_descriptions = load_clean_descriptions('descriptions.txt', test)
-print('Descriptions: test=%d' % len(test_descriptions))
-
-# photo features
-test_features = load_photo_features('features.pickle', test)
-print('Photos: test=%d' % len(test_features))
-"""
 
 
 # fit model
