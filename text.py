@@ -69,7 +69,7 @@ def save_descriptions(descriptions, filename):
         for desc in desc_list:
             lines.append(key + ' ' + desc)
     data = '\n'.join(lines)
-    with open(filename, 'w') as file:
+    with open(filename, 'w', encoding='utf-8') as file:
         file.write(data)
 
 
@@ -84,6 +84,3 @@ if __name__ == '__main__':
     # print(vocabulary)
     print(len(vocabulary))
     save_descriptions(descriptions, 'descriptions.txt')
-
-
-save_descriptions(descriptions, 'descriptions.txt')

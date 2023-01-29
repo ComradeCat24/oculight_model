@@ -4,8 +4,7 @@ import numpy as np
 from pickle import load
 from collections import defaultdict
 from keras.preprocessing.text import Tokenizer
-from keras.preprocessing.sequence import pad_sequences
-from keras.utils import to_categorical, plot_model
+from keras.utils import to_categorical, plot_model, pad_sequences
 from keras.models import Model
 from keras.layers import Input, Dense, LSTM, Embedding, Dropout, Add
 from keras.callbacks import ModelCheckpoint, EarlyStopping
@@ -16,7 +15,7 @@ from keras.regularizers import l2
 def load_doc(filename):
     if os.path.isfile(filename):
         try:
-            with open(filename, 'rb') as file:
+            with open(filename, 'rb', encoding='utf-8') as file:
                 return file.read()
         except IOError as e:
             print(f"Error Occured: {e}")
@@ -26,7 +25,7 @@ def load_doc(filename):
 
 # load a pre-defined list of photo identifiers
 def load_set(filename):
-    with open(filename, 'r') as file:
+    with open(filename, 'r', encoding='utf-8') as file:
         # process line by line
         lines = file.readlines()
 
@@ -38,7 +37,7 @@ def load_set(filename):
 # load clean descriptions into memory
 def load_clean_descriptions(filename, dataset):
     # load document
-    with open(filename, "r") as file:
+    with open(filename, "r", encoding='utf-8') as file:
         doc = file.readlines()
 
     descriptions = defaultdict(list)
@@ -61,12 +60,14 @@ def load_clean_descriptions(filename, dataset):
 
 # load photo features
 def load_photo_features(filename, dataset):
-    try:
-        with open(filename, 'r') as file:
-            all_features = load(file)
-    except FileNotFoundError:
-        print(f"{filename} not found.")
-        return None
+    # try:
+    #     with open(filename, 'r') as file:
+    #         all_features = load(file)
+    # except FileNotFoundError:
+    #     print(f"{filename} not found.")
+    #     return None
+
+    all_features = load(open(filename, 'rb'))
 
     features = filter(lambda x: x[0] in dataset, all_features.items())
     return dict(features)
@@ -128,7 +129,7 @@ def define_model(vocab_size, max_length):
     se3 = LSTM(256)(se2)
 
     # decoder model
-    decoder1 = Add([fe2, se3])
+    decoder1 = Add()([fe2, se3])
     decoder2 = Dense(256, activation='relu',
                      kernel_regularizer=l2(0.01))(decoder1)
 
@@ -142,7 +143,7 @@ def define_model(vocab_size, max_length):
 
     # summarize model
     model.summary()
-    plot_model(model, to_file='model.png', show_shapes=True)
+    # plot_model(model, to_file='model.png', show_shapes=True)
 
     # earlystop = EarlyStopping(
     #     monitor='val_loss', min_delta=0, patience=3, verbose=0, mode='auto')
@@ -160,6 +161,7 @@ def data_generator(descriptions, photos, tokenizer, max_length, vocab_size, n_it
             break
         random.shuffle(keys)
         for key in keys:
+            print(key)
             try:
                 # retrieve the photo feature
                 photo = photos[key][0]
@@ -174,7 +176,7 @@ def data_generator(descriptions, photos, tokenizer, max_length, vocab_size, n_it
 # train dataset
 
 # load training dataset
-train_filename = 'dataset/splits/captions.trainImages.txt'
+train_filename = 'dataset/splits/captions.train.txt'
 
 train = load_set(train_filename)
 print('Dataset: %d' % len(train))
@@ -208,7 +210,7 @@ steps_per_epoch = len(train_descriptions)
 
 # create the data generator
 train_generator = data_generator(
-    train_descriptions, train_features, tokenizer, max_length, vocab_size)
+    train_descriptions, trrain_features, tokenizer, max_length, vocab_size)
 
 # create callbacks list
 callbacks_list = [
