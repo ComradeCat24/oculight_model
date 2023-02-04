@@ -1,40 +1,41 @@
 from os import listdir
-import pickle
+from pickle import dump
+# from keras.applications.vgg16 import VGG16, preprocess_input
 from keras.applications.mobilenet_v2 import MobileNetV2, preprocess_input
 from keras.preprocessing.image import ImageDataGenerator
+from keras.utils import load_img, img_to_array
 from keras.models import Model
-
-# Preparing Photo Data
 
 
 def extract_features(directory):
 
+    # model = VGG16(include_top=False, input_shape=(224, 224, 3))
+
     model = MobileNetV2(weights='imagenet', include_top=False)
     model = Model(inputs=model.inputs, outputs=model.layers[-2].output)
-    print(model.summary())
+    model.summary()
 
-    features = {}
+    features = dict()
+    datagen = ImageDataGenerator(preprocessing_function=preprocess_input)
 
-    # datagen = ImageDataGenerator(preprocessing_function=preprocess_input)
-    datagen = ImageDataGenerator(rescale=1. / 255)
+    def feature_generator(directory):
+        for name in listdir(directory):
+            filename = directory + '/' + name
+            image_id = name.split(".")[0]
+            image = load_img(filename, target_size=(224, 224))
+            image = img_to_array(image)
+            image = image.reshape(
+                (1, image.shape[0], image.shape[1], image.shape[2]))
+            feature = model.predict(datagen.flow(image, batch_size=32))
+            print('>%s' % name)
+            yield image_id, feature
 
-    # Generate batches of image data from the specified directory
-    data_gen = datagen.flow_from_directory(
-        directory, target_size=(150, 150), class_mode=None)
-
-    # Extract features from each batch
-    for features_batch in model.predict(data_gen, verbose=1):
-        for i in range(min(len(data_gen.filenames), len(features_batch))):
-            image_id = data_gen.filenames[i].split('.')[0]
-            features[image_id] = features_batch[i]
-            print('>%s' % data_gen.filenames[i])
-
-    with open('features.pickle', 'wb') as handle:
-        pickle.dump(features, handle, protocol=pickle.HIGHEST_PROTOCOL)
-
+    features = dict(feature_generator(directory))
     return features
 
 
-# directory = 'Flicker30k_Dataset'
-directory = 'dataset'
+directory = 'dataset/subset'
 features = extract_features(directory)
+print(f'Features: ${features}')
+print('Extracted Features: %d' % len(features))
+dump(features, open('features.pkl', 'wb'))
