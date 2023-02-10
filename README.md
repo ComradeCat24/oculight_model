@@ -21,7 +21,6 @@ pip install -r requirements.txt
 ```
 
 This will install all the packages listed in the requirements.txt file in the new environment.
-
 5. To deactivate the virtual environment, use the `deactivate` command.
 ```shell
 deactivate
