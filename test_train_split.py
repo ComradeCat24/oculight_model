@@ -27,7 +27,8 @@ def split_data(caption_file, test_size=0.2, validation_size=0.2):
     for filename, data in tqdm([(train_file, train_data), (validation_file, validation_data), (test_file, test_data)], desc="Saving files"):
         with open(filename, 'w') as file:
             for _, row in data.iterrows():
-                file.write(row['image,caption'].split(',')[0])
+                file.write(
+                    row['image_name,comment_number,comment'].split(',')[0])
                 file.write('\n')
 
 

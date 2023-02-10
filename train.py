@@ -60,17 +60,16 @@ def load_clean_descriptions(filename, dataset):
 
 # load photo features
 def load_photo_features(filename, dataset):
-    # try:
-    #     with open(filename, 'r') as file:
-    #         all_features = load(file)
-    # except FileNotFoundError:
-    #     print(f"{filename} not found.")
-    #     return None
+    try:
+        with open(filename, 'rb') as f:
+            all_features = load(f)
+    except FileNotFoundError:
+        print(f"{filename} not found.")
+        return None
 
-    all_features = load(open(filename, 'rb'))
+    all_features = {k.split('/')[-1]: v for k, v in all_features.items()}
 
-    features = filter(lambda x: x[0] in dataset, all_features.items())
-    return dict(features)
+    return {k: all_features[k] for k in dataset if k in all_features}
 
 
 # covert a dictionary of clean descriptions to a list of descriptions
@@ -210,7 +209,7 @@ steps_per_epoch = len(train_descriptions)
 
 # create the data generator
 train_generator = data_generator(
-    train_descriptions, trrain_features, tokenizer, max_length, vocab_size)
+    train_descriptions, train_features, tokenizer, max_length, vocab_size)
 
 # create callbacks list
 callbacks_list = [
