@@ -34,7 +34,7 @@ def extract_features(directory):
     return features
 
 
-directory = 'dataset/subset'
+directory = 'subset_dataset/selected_images'
 features = extract_features(directory)
 print(f'Features: ${features}')
 print('Extracted Features: %d' % len(features))
