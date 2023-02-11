@@ -12,7 +12,7 @@ images_dir = f"{parent_dir}/dataset/flickr30k_images"
 captions_path = f"{parent_dir}/dataset/captions.txt"
 
 # Set the number of captions you want to select
-num_captions = 10
+num_captions = 30
 
 # Read the captions file into a list
 with open(captions_path, "r") as f:
@@ -34,6 +34,7 @@ if not os.path.exists(selected_images_dir):
 # Select the first num_captions images from the shuffled list and write the captions to the subset captions file
 selected_image_names = image_names[:num_captions]
 with open(subset_captions_path, "w") as f:
+    f.write("image_name,comment_number,comment\n")
     for image_name in selected_image_names:
         image_captions = [
             line for line in captions if line.startswith(image_name)]

@@ -1,0 +1,151 @@
+image_name,comment_number,comment
+1478606153.jpg,0,A large brown  white  and gray dog is running through a forest covered in leaves .
+1478606153.jpg,1,Brown and white dog running through fall leaves on the ground .
+1478606153.jpg,2,The brown dog bounds through the leaves and the underbrush .
+1478606153.jpg,3,A brown and white dog is running through woodland .
+1478606153.jpg,4,A tan long-haired dog is running in the forest
+3547600292.jpg,0,A black and yellow bird is eating a worm while resting on the grassy ground .
+3547600292.jpg,1,A black bird with a yellow beak standing in green grass .
+3547600292.jpg,2,A brown bird is standing still in a grassy field .
+3547600292.jpg,3,A black and orange bird in the grass
+3547600292.jpg,4,A bird with a bug in its mouth .
+141559699.jpg,0,A little girl playing with a knob on a closet in a room and a little boy jumping on someone on a bed .
+141559699.jpg,1,A young boy in a Tigger shirt stands on top of someone lying in a bed .
+141559699.jpg,2,A boy with a tiger t-shirt stands on top of someone in a bed .
+141559699.jpg,3,A boy and girl are playing in bed on top of their father .
+141559699.jpg,4,A kid in an orange sweater is standing on a bed .
+6003400894.jpg,0,A woman in a white dress climbs a scaffold that looks like a trapeze .
+6003400894.jpg,1,A trapeze artist climbing to the top of the trapeze .
+6003400894.jpg,2,A girl in a white dress high up hanging from straps .
+6003400894.jpg,3,A woman in white climbs up a metal structure .
+6003400894.jpg,4,A girl climbs all over a bunch of wires .
+210713758.jpg,0,A young boy in a blue shirt examining a baby crocodile while at the zoo .
+210713758.jpg,1,A boy is holding a reptile with trees in the background .
+210713758.jpg,2,A boy wearing a blue shirt  holding a little alligator .
+210713758.jpg,3,A young boy holds a baby crocodile up to the camera .
+210713758.jpg,4,Little boy holding a baby alligator .
+3783987753.jpg,0,The female artist was painting a landscape picture in the outdoors using a variety of colors .
+3783987753.jpg,1,A female artist is painting a painting of a city .
+3783987753.jpg,2,Woman paints on easel in front of stone wall .
+3783987753.jpg,3,woman painting a picture outside .
+3783987753.jpg,4,An artist is painting outside .
+2774880158.jpg,0,Young South Asian Children play in the water near a small dam in a guided river .
+2774880158.jpg,1,Kids play in the rushing water around them .
+2774880158.jpg,2,A group of children are playing in water .
+2774880158.jpg,3,shirtless children play in the water .
+2774880158.jpg,4,Children are playing in green water .
+860271719.jpg,0,farmers are performing their agriculture during the day .
+860271719.jpg,1,People and goats are walking around a muddy field .
+860271719.jpg,2,Field workers are working in a rice paddy .
+860271719.jpg,3,Two men are out with goats on a farm .
+860271719.jpg,4,Five workers on a muddy field .
+2087469385.jpg,0,A man carries a box into his red pickup truck as a dazzling red tree attracts attention .
+2087469385.jpg,1,In autumn  a man holding a box approaches a red truck in a parking lot .
+2087469385.jpg,2,A man in a parking lot next to a red truck putting a box into it .
+2087469385.jpg,3,A man carrying a box into his red chevy truck .
+2087469385.jpg,4,A man putting an item in a truck .
+359173181.jpg,0,The brown  furry animal is walking in the snowy grass with a tree behind him .
+359173181.jpg,1,A dog runs through snow with a big tree in the distance .
+359173181.jpg,2,A dog runs through snow covered ground  near a tree .
+359173181.jpg,3,Dog races through grass by lone tree .
+359173181.jpg,4,A dog leaps through a snowy field .
+6948376088.jpg,0,Soccer player in white and green dives for the ball as he defends against his opponent in black .
+6948376088.jpg,1,A soccer player is sliding as he kicks the ball and a defending player closes in on him .
+6948376088.jpg,2,There are two teams aggressively competing in a soccer game .
+6948376088.jpg,3,Six men practicing a sport on a field .
+6948376088.jpg,4,Two soccer teams going at it .
+289638863.jpg,0,A professional soccer player wearing a yellow and gray jersey prepares to throw in the ball as the referee and fans look on .
+289638863.jpg,1,A soccer player in a yellow shirt tossing the ball back .
+289638863.jpg,2,a soccer playing holding the ball as a crowd looks
+289638863.jpg,3,A soccer player about to throw in the ball .
+289638863.jpg,4,A man in yellow clothing holding a ball .
+4922642099.jpg,0,A dog on a leash sits alone on a city step with a bottled drink and a book next to it .
+4922642099.jpg,1,The dog with all the comforts of home and yet still has no home .
+4922642099.jpg,2,A dog with a collar on lying on the street .
+4922642099.jpg,3,Dog relaxing on a busy street for tips .
+4922642099.jpg,4,A dog laying on the side of the street .
+3420064875.jpg,0,Brown dog with brown collar looking to left with a clear blue sky in background .
+3420064875.jpg,1,A brown dog looks off into the distance by some farm equipment .
+3420064875.jpg,2,A gray dog with a matching collar standing beside a tractor .
+3420064875.jpg,3,A dark brown dog standing on construction equipment .
+3420064875.jpg,4,A dog looking off into the distance .
+4901078902.jpg,0,A group of kids are playing with a car creator game on screens in front of them .
+4901078902.jpg,1,Young boys and girls looking at the screens in some kind of a learning center .
+4901078902.jpg,2,Children playing games at build-n-paint .
+4901078902.jpg,3,Children play with touch screen TVs .
+4901078902.jpg,4,Some kids playing video games .
+508432819.jpg,0,An off road vehicle climbs over a dirt hill .
+508432819.jpg,1,A vehicle comes over the top of a hill .
+508432819.jpg,2,A jeep tries driving over a rocky hill .
+508432819.jpg,3,A white jeep in the dirt in the woods .
+508432819.jpg,4,Monster Truck rides through dirt field
+1131804997.jpg,0,Two men with backpacks placed in front of them sitting in front of a railing .
+1131804997.jpg,1,Two men are sitting on the ground and going through their backpacks .
+1131804997.jpg,2,Two men with backpacks are sitting on cardboard along a railing .
+1131804997.jpg,3,Two men sitting in front of a railing are looking at something .
+1131804997.jpg,4,Two older men with backpacks sit at a bus station .
+2053683299.jpg,0,Three teens are standing next to each other in a classroom with a blackboard behind them .
+2053683299.jpg,1,Three young people  two males and a female stand smiling for the camera in a classroom .
+2053683299.jpg,2,2 male students and a female student smiling in a classroom with desks and a chalkboard .
+2053683299.jpg,3,A female and two males in a classroom .
+2053683299.jpg,4,Three people posing in a school room .
+2932553502.jpg,0,Young male and female adults converse over game they are playing .
+2932553502.jpg,1,A group of young adults are standing near a chain link fence .
+2932553502.jpg,2,A group of young people standing around a sports field .
+2932553502.jpg,3,Men and women chat while holding tennis rackets .
+2932553502.jpg,4,A group of people that finished playing tennis .
+3771013578.jpg,0,Two young white girls and one white boy sit on a bench outside talking .
+3771013578.jpg,1,four teenagers are sitting on a bench at night .
+3771013578.jpg,2,Young teens hanging out and enjoying themselves
+3771013578.jpg,3,Three teens sit outside on a table .
+3771013578.jpg,4,Three teenagers out at night .
+4038718263.jpg,0,There are two shadowy men standing along side a stream that runs through a paved courtyard in front of some stairs .
+4038718263.jpg,1,Two shadowy figures standing under a bridge  two cans at their feet .
+4038718263.jpg,2,Two people are standing along a small canal on a dimly light street .
+4038718263.jpg,3,Two men are having a conversation next to a canal at night .
+4038718263.jpg,4,Two men are standing in a dark alley at night .
+4156791157.jpg,0,A woman in a yellow shirt is doing a ballerina pose outside  you can see trees and the sky in the background .
+4156791157.jpg,1,A woman in a yellow shirt is dancing barefoot on a shiny surface in front of forestry .
+4156791157.jpg,2,One lady calmly doing some form of relaxation exercise outdoors .
+4156791157.jpg,3,A woman dancing on a stage in the middle of the wilderness .
+4156791157.jpg,4,A barefoot woman poses in front of a sylvan background .
+2349645589.jpg,0,Two young people riding skateboards pass by in the street as a black dog on a red leash stops in a doorway and squats down on the sidewalk .
+2349645589.jpg,1,A person is walking their dog on a leash while a child in a red shirt rides by on a skateboard
+2349645589.jpg,2,A person is walking their Boston Terrier along the street when it stops to relieve itself .
+2349645589.jpg,3,Two skateboarders are on the road with a window full of flags in the background .
+2349645589.jpg,4,A dog taking a poop in the street .
+3093523191.jpg,0,A man is walking in front of a bunch of protesting signs and on the right of the photo there are protesters .
+3093523191.jpg,1,A man walks in front of several protest signs where people have gathered to protest .
+3093523191.jpg,2,A man in a black coat that is about to walk through a crowd of protesters .
+3093523191.jpg,3,An older man walking down a sidewalk next to signs .
+3093523191.jpg,4,A man walks by a building with many signs outside .
+3963243135.jpg,0,A man with a gray jacket and white hat bending over watering a garden with a water container .
+3963243135.jpg,1,A man in a brown shirt and a white baseball cap uses a plastic barrel to water tomato plants .
+3963243135.jpg,2,A man wearing a white hat pours water onto flowers in a field .
+3963243135.jpg,3,A man pours water on plants in a vast field of small plants .
+3963243135.jpg,4,Black male pours water on crops in a field .
+4497283483.jpg,0,A person in a black shirt is lying on the ground looking up at a man .
+4497283483.jpg,1,A man lying on the ground watches another man smiling in a hat .
+4497283483.jpg,2,The ban in the black hat is playing charades with his friend .
+4497283483.jpg,3,A guy dress in blue & white is making a funny position .
+4497283483.jpg,4,man dances in the street while another man looks on .
+4644932044.jpg,0,A crowd of people have witnessed a car accident involving two vehicles  a red car and a blue car .
+4644932044.jpg,1,A group of onlookers stares at two wrecked vehicles  one of which was flipped onto its side .
+4644932044.jpg,2,A group of people are gathered around a car on the ground and a car turned on its side .
+4644932044.jpg,3,Bystanders watch the aftermath of an accident between a red and black car .
+4644932044.jpg,4,A crowd of people is standing around looking at a car wreck .
+1164765687.jpg,0,A man in a red shirt and glasses is bending down towards a small dog on a blanket with several stuffed animals .
+1164765687.jpg,1,A man playing with his dog on the blanket on the floor .
+1164765687.jpg,2,A man in a red shirt is giving toys to a small dog .
+1164765687.jpg,3,A man playing with a black dog on a white blanket .
+1164765687.jpg,4,A man is playing tug-of-war with his dog .
+2536858553.jpg,0,White man standing on scaffolding wearing an orange jacket painting a ceiling .
+2536858553.jpg,1,A man in an orange vest stands on scaffolding while painting .
+2536858553.jpg,2,A man on a scaffold paints a wall with a paint roller .
+2536858553.jpg,3,A man wearing orange is painting a wall white .
+2536858553.jpg,4,A main in a construction hat primes wall .
+1434128388.jpg,0,A man with dark brown hair wearing a gray shirt is making something in the kitchen with a plate of lemons next to him .
+1434128388.jpg,1,A man in a gray T-shirt is zesting lemons into a turquoise-and-olive-green bowl .
+1434128388.jpg,2,A man in a gray shirt with a beard prepares a recipe .
+1434128388.jpg,3,A man staring into the camera as he cuts lemons .
+1434128388.jpg,4,A man wearing a gray shirt grating lemon rinds .
