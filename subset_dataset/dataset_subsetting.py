@@ -21,6 +21,9 @@ with open(captions_path, "r") as f:
 # Create a list of image names from the captions
 image_names = list(set([line.split(",")[0] for line in captions]))
 
+# Set the random seed
+random.seed(42)
+
 # Shuffle the list of image names
 random.shuffle(image_names)
 
