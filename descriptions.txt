@@ -1,151 +1,151 @@
 image_name, comment_number, comment
-3647446816, 0, two girls play softball one slides into plate as other fails to catch ball
-3647446816, 1, two girls are playing softball and one is sliding to the home plate
-3647446816, 2, runner is safe at home plate at youth softball game
-3647446816, 3, girl playing softball slides into home plate
-3647446816, 4, girl slides in for homerun
-459778335, 0, an adult man is throwing child into the air at beach while another child watches
-459778335, 1, father with his two kids at the ocean with the young boy flying up in the air
-459778335, 2, young boy is thrown by man as girl watches at the beach
-459778335, 3, little boy jumps from his fathers arms on the beach
-459778335, 4, man tosses boy into the air at the beach
-126514207, 0, child is rock climbing while wearing white safety helmet white shirt blue jacket blue jeans and white sneakers
-126514207, 1, an inflatable rock climbing obstacle is scaled by person wearing white helmet
-126514207, 2, young person with rock climbing gear rock climbing on artificial rock wall
-126514207, 3, young child is climbing rock wall in all his protective gear
-126514207, 4, kid climbing wall wearing helmet
-489372715, 0, brown dog with large ears is shaking its self while standing on sand
-489372715, 1, the orange haired dog shook its head while standing on the beach
-489372715, 2, brown dog is shaking his head while standing on sand
-489372715, 3, an orange dog shakes his head very hard on the sand
-489372715, 4, tan dog shaking its body
-378503271, 0, blond girl pulls funny face as she cubes velveeta cheese and puts it in bowl
-378503271, 1, girl makes face while cutting cheese cubes in her kitchen
-378503271, 2, lady slicing velveeta cheese making funny face
-378503271, 3, the lady is using the knife to cube some cheese
-378503271, 4, woman is surprised cutting the cheese
-3211577298, 0, an african american man is jumping off surfboard in crashing wave in the ocean
-3211577298, 1, surfer is falling of his surfboard in the middle of crashing wave
-3211577298, 2, man is surfing big wave on white surfboard
-3211577298, 3, man surfs over huge wave in the ocean
-3211577298, 4, man surfing crashing wave
-2314492671, 0, several ladies are sitting together around table
-2314492671, 1, women sitting around table doing some crafts
-2314492671, 2, the women are drinking wine and knitting
-2314492671, 3, group of are sitting around drinking
-2314492671, 4, women gathered around knitting
-419965392, 0, man and two children of asian descent sit outside by giant basket
-419965392, 1, asian man and two children sit outside with large loose woven basket
-419965392, 2, man with large basket and two children are sitting outside
-419965392, 3, mother and her two children sit down to rest
-419965392, 4, an asian man and two children sitting outdoors
-509439572, 0, man and woman are in parking lot moving some seats
-509439572, 1, two people are carrying rows of white and teal seats
-509439572, 2, people set up rows of chairs next to storage box
-509439572, 3, people setting up chairs outside in parking lot
-509439572, 4, guys setting up chairs from container
-289636441, 0, there are bunch of soccer players standing around the soccer field in the middle of game
-289636441, 1, there is stadium full of people watching sporting event with male players
-289636441, 2, soccer game where everyone is standing around on the field
-289636441, 3, the soccer teams are gathered on the field
-289636441, 4, two soccer teams are playing game
-2922651812, 0, middleaged woman wearing white top is using her desktop computer while she has her laptop open next to her
-2922651812, 1, woman in an office looks at the screens of desktop computer and laptop
-2922651812, 2, woman is working on desktop computer with laptop nearby
-2922651812, 3, one woman browsing the internet in the comfort of her home
-2922651812, 4, woman working on pc in her bathrobe
-2460568004, 0, several people stand in forest area while man in black shirt sits in the distance
-2460568004, 1, three people standing in group at park and one man reading at park
-2460568004, 2, boys sitting on the ground writing
-2460568004, 3, few people in public park
-2460568004, 4, people sitting in park
-4213107150, 0, woman wearing dear santa tshirt is looking at star wars book with young boy in bright pink shirt
-4213107150, 1, darkhaired woman and little boy in red shirt looking at star wars book together
-4213107150, 2, woman with black curly hair reads book with boy in red shirt
-4213107150, 3, woman and young boy read book together in living room
-4213107150, 4, woman reading to child
-4168954238, 0, bunch of caucasians are dining and their attention seems to be directed at something
-4168954238, 1, group of people sitting down to meal in an old wooden building
-4168954238, 2, group of people are sitting at table and drinking
-4168954238, 3, bunch of people sitting around tables with drinks
-4168954238, 4, large group of people are enjoying drinks
-7513059830, 0, man jumps from large boulder with clear blue sky behind him
-7513059830, 1, bald man in glasses in the middle of jump on rock landscape
-7513059830, 2, man in black shirt is mid jump on large rock formation
-7513059830, 3, shorthaired man is jumping while on top of huge boulder
-7513059830, 4, man jumping excitedly on mountain
-687019615, 0, bearded man in tan hat assists bald man in tennis shoes near campfire
-687019615, 1, man in brown hat is helping man with no hair up off the ground
-687019615, 2, man wearing hat is picking up another man beside campfire
-687019615, 3, man chair has collapsed at campsite
-687019615, 4, two adult men in crowded campsite
-584484388, 0, two little wiener dogs are running on the grass carrying red ball between them
-584484388, 1, two brown dogs fight over red ball while playing in the grass
-584484388, 2, two brown dogs run over the grass carrying red toy
-584484388, 3, two brown dogs are playing with red ball
-584484388, 4, two daschunds play with red ball
-6284697322, 0, three students with pencils inhand writing in notebooks at their desks
-6284697322, 1, young girl in blue shirt is writing with pencil in notebook
-6284697322, 2, female student concentrates on her schoolwork
-6284697322, 3, three children writing intently in classroom
-6284697322, 4, woman is taking notes in her notebook
-2942514377, 0, man in blue shirt speaking with man in maroon shirt while man in black shirt and jeans videotapes the conversation
-2942514377, 1, the offerings of one man to another being filmed by cameraman
-2942514377, 2, cameraman films chef giving dish to another man
-2942514377, 3, someone being interviewed
-2942514377, 4, news interview with man
-3282925526, 0, man lying down with maroon cloth over his eyes and someone standing over him wearing flipflops
-3282925526, 1, man with dark red shirt covering his face rests on the pavement near person feet
-3282925526, 2, man napping on the ground with shirt over his eyes with person standing beside him
-3282925526, 3, man wearing maroon shirt tied around his face is laying on the cement
-3282925526, 4, man on the pavement shielding his eyes with his tshirt
-2904129133, 0, little boy drinks water from fountain while another little boy watches and makes face
-2904129133, 1, an older boy drinks from water fountain while younger boy watches
-2904129133, 2, two boys stand near drinking fountain as one takes drink
-2904129133, 3, two boys are getting drinks out of water fountain
-2904129133, 4, two boys are at an outdoor water fountain
-1341077576, 0, man in red shirt and blue pants is going into building while dog watches him
-1341077576, 1, man walking into building while dog looks at him
-1341077576, 2, man walks into maroon building as dog looks on
-1341077576, 3, man in red shirt entering an establishment
-1341077576, 4, man walking into foreign building
-4024855306, 0, vegetables on stand with people waking around in the background
-4024855306, 1, asian people are standing in front of vegetable market
-4024855306, 2, woman shopping for vegetables at market
-4024855306, 3, shop on the street selling vegetables
-4024855306, 4, peoples buy any vegetables
-458004873, 0, person sitting on tan bench and man in green shirt standing on black and gray floor
-458004873, 1, topdown view of man sitting on bench inside with standing man facing him
-458004873, 2, man is sitting on bench facing another man who is standing
-458004873, 3, man sits on bench while another man walks toward him
-458004873, 4, this over the top photo shows two men taking break
-3121219649, 0, three men stand in forest among dense cluster of large tree trunks
-3121219649, 1, three men in the middle of the woods are looking at tree
-3121219649, 2, three men look at tree in the woods
-3121219649, 3, three men are standing in forest
-3121219649, 4, three men examine tree
-6917596231, 0, six men appear to be reacting to the ground punch of man dressed in black as beautiful blue pervades the ocean and sky that seem to merge with beach
-6917596231, 1, seven young men on the beach playing game of balance and skill involving concentric circles drawn in the sand about three feet apart
-6917596231, 2, group of people are posing as though flung back by the shock wave of someone punching the ground
-6917596231, 3, an all male crowd on beach are throwing themselves backward as one kneels in the middle
-6917596231, 4, group of people on beach are simulating an earthshattering punch
-6888808971, 0, mailman with rolling mailbag smiling at the camera in front of wall topped with an iron decorative fence
-6888808971, 1, postal carrier with big smile stands on the sidewalk with his cart of mail
-6888808971, 2, smiling post office worker proudly shows off his four wheeled mailbag carrier
-6888808971, 3, mailman poses with his cart in front of residential building
-6888808971, 4, mailman wheeling his bag of mail
-2705101597, 0, boy in red shirt with white stripes jeans and red hat is throwing blue bowling ball down the lane at bowling alley
-2705101597, 1, young man in red striped shirt and blue jeans is bowling with blue ball at bowling alley
-2705101597, 2, boy in red cap rolls his bowling ball down the alley
-2705101597, 3, the blue ball rolls steadily towards the pins
-2705101597, 4, man in red hat and shirt bowls
-5491397203, 0, middleaged man wearing baseball cap turned backwards black shirt and blue shorts who is driving boat which has wooden steering wheel with the british flag flown in the background
-5491397203, 1, bearded man wearing blue striped shorts dark teeshirt and backwards baseball cap stands at the wheel of ship flying tattered red flagon open water
-5491397203, 2, man in backwards baseball cap black shirt and blue shorts behind the steering wheel of boat with flag behind him
-5491397203, 3, an older gentleman poses at the helm of boat
-5491397203, 4, man is navigating boat
-3504379205, 0, two women look at table with assorted items on it in some sort of market that others are currently browsing
-3504379205, 1, two women looking at food vendor considering if they want to buy something
-3504379205, 2, tourists at flea market bartering for souvenirs
-3504379205, 3, people are shopping in an open air market
-3504379205, 4, group of people eat food inside mall
+3647446816.jpg, 0, two girls play softball one slides into plate as other fails to catch ball
+3647446816.jpg, 1, two girls are playing softball and one is sliding to the home plate
+3647446816.jpg, 2, runner is safe at home plate at youth softball game
+3647446816.jpg, 3, girl playing softball slides into home plate
+3647446816.jpg, 4, girl slides in for homerun
+459778335.jpg, 0, an adult man is throwing child into the air at beach while another child watches
+459778335.jpg, 1, father with his two kids at the ocean with the young boy flying up in the air
+459778335.jpg, 2, young boy is thrown by man as girl watches at the beach
+459778335.jpg, 3, little boy jumps from his fathers arms on the beach
+459778335.jpg, 4, man tosses boy into the air at the beach
+126514207.jpg, 0, child is rock climbing while wearing white safety helmet white shirt blue jacket blue jeans and white sneakers
+126514207.jpg, 1, an inflatable rock climbing obstacle is scaled by person wearing white helmet
+126514207.jpg, 2, young person with rock climbing gear rock climbing on artificial rock wall
+126514207.jpg, 3, young child is climbing rock wall in all his protective gear
+126514207.jpg, 4, kid climbing wall wearing helmet
+489372715.jpg, 0, brown dog with large ears is shaking its self while standing on sand
+489372715.jpg, 1, the orange haired dog shook its head while standing on the beach
+489372715.jpg, 2, brown dog is shaking his head while standing on sand
+489372715.jpg, 3, an orange dog shakes his head very hard on the sand
+489372715.jpg, 4, tan dog shaking its body
+378503271.jpg, 0, blond girl pulls funny face as she cubes velveeta cheese and puts it in bowl
+378503271.jpg, 1, girl makes face while cutting cheese cubes in her kitchen
+378503271.jpg, 2, lady slicing velveeta cheese making funny face
+378503271.jpg, 3, the lady is using the knife to cube some cheese
+378503271.jpg, 4, woman is surprised cutting the cheese
+3211577298.jpg, 0, an african american man is jumping off surfboard in crashing wave in the ocean
+3211577298.jpg, 1, surfer is falling of his surfboard in the middle of crashing wave
+3211577298.jpg, 2, man is surfing big wave on white surfboard
+3211577298.jpg, 3, man surfs over huge wave in the ocean
+3211577298.jpg, 4, man surfing crashing wave
+2314492671.jpg, 0, several ladies are sitting together around table
+2314492671.jpg, 1, women sitting around table doing some crafts
+2314492671.jpg, 2, the women are drinking wine and knitting
+2314492671.jpg, 3, group of are sitting around drinking
+2314492671.jpg, 4, women gathered around knitting
+419965392.jpg, 0, man and two children of asian descent sit outside by giant basket
+419965392.jpg, 1, asian man and two children sit outside with large loose woven basket
+419965392.jpg, 2, man with large basket and two children are sitting outside
+419965392.jpg, 3, mother and her two children sit down to rest
+419965392.jpg, 4, an asian man and two children sitting outdoors
+509439572.jpg, 0, man and woman are in parking lot moving some seats
+509439572.jpg, 1, two people are carrying rows of white and teal seats
+509439572.jpg, 2, people set up rows of chairs next to storage box
+509439572.jpg, 3, people setting up chairs outside in parking lot
+509439572.jpg, 4, guys setting up chairs from container
+289636441.jpg, 0, there are bunch of soccer players standing around the soccer field in the middle of game
+289636441.jpg, 1, there is stadium full of people watching sporting event with male players
+289636441.jpg, 2, soccer game where everyone is standing around on the field
+289636441.jpg, 3, the soccer teams are gathered on the field
+289636441.jpg, 4, two soccer teams are playing game
+2922651812.jpg, 0, middleaged woman wearing white top is using her desktop computer while she has her laptop open next to her
+2922651812.jpg, 1, woman in an office looks at the screens of desktop computer and laptop
+2922651812.jpg, 2, woman is working on desktop computer with laptop nearby
+2922651812.jpg, 3, one woman browsing the internet in the comfort of her home
+2922651812.jpg, 4, woman working on pc in her bathrobe
+2460568004.jpg, 0, several people stand in forest area while man in black shirt sits in the distance
+2460568004.jpg, 1, three people standing in group at park and one man reading at park
+2460568004.jpg, 2, boys sitting on the ground writing
+2460568004.jpg, 3, few people in public park
+2460568004.jpg, 4, people sitting in park
+4213107150.jpg, 0, woman wearing dear santa tshirt is looking at star wars book with young boy in bright pink shirt
+4213107150.jpg, 1, darkhaired woman and little boy in red shirt looking at star wars book together
+4213107150.jpg, 2, woman with black curly hair reads book with boy in red shirt
+4213107150.jpg, 3, woman and young boy read book together in living room
+4213107150.jpg, 4, woman reading to child
+4168954238.jpg, 0, bunch of caucasians are dining and their attention seems to be directed at something
+4168954238.jpg, 1, group of people sitting down to meal in an old wooden building
+4168954238.jpg, 2, group of people are sitting at table and drinking
+4168954238.jpg, 3, bunch of people sitting around tables with drinks
+4168954238.jpg, 4, large group of people are enjoying drinks
+7513059830.jpg, 0, man jumps from large boulder with clear blue sky behind him
+7513059830.jpg, 1, bald man in glasses in the middle of jump on rock landscape
+7513059830.jpg, 2, man in black shirt is mid jump on large rock formation
+7513059830.jpg, 3, shorthaired man is jumping while on top of huge boulder
+7513059830.jpg, 4, man jumping excitedly on mountain
+687019615.jpg, 0, bearded man in tan hat assists bald man in tennis shoes near campfire
+687019615.jpg, 1, man in brown hat is helping man with no hair up off the ground
+687019615.jpg, 2, man wearing hat is picking up another man beside campfire
+687019615.jpg, 3, man chair has collapsed at campsite
+687019615.jpg, 4, two adult men in crowded campsite
+584484388.jpg, 0, two little wiener dogs are running on the grass carrying red ball between them
+584484388.jpg, 1, two brown dogs fight over red ball while playing in the grass
+584484388.jpg, 2, two brown dogs run over the grass carrying red toy
+584484388.jpg, 3, two brown dogs are playing with red ball
+584484388.jpg, 4, two daschunds play with red ball
+6284697322.jpg, 0, three students with pencils inhand writing in notebooks at their desks
+6284697322.jpg, 1, young girl in blue shirt is writing with pencil in notebook
+6284697322.jpg, 2, female student concentrates on her schoolwork
+6284697322.jpg, 3, three children writing intently in classroom
+6284697322.jpg, 4, woman is taking notes in her notebook
+2942514377.jpg, 0, man in blue shirt speaking with man in maroon shirt while man in black shirt and jeans videotapes the conversation
+2942514377.jpg, 1, the offerings of one man to another being filmed by cameraman
+2942514377.jpg, 2, cameraman films chef giving dish to another man
+2942514377.jpg, 3, someone being interviewed
+2942514377.jpg, 4, news interview with man
+3282925526.jpg, 0, man lying down with maroon cloth over his eyes and someone standing over him wearing flipflops
+3282925526.jpg, 1, man with dark red shirt covering his face rests on the pavement near person feet
+3282925526.jpg, 2, man napping on the ground with shirt over his eyes with person standing beside him
+3282925526.jpg, 3, man wearing maroon shirt tied around his face is laying on the cement
+3282925526.jpg, 4, man on the pavement shielding his eyes with his tshirt
+2904129133.jpg, 0, little boy drinks water from fountain while another little boy watches and makes face
+2904129133.jpg, 1, an older boy drinks from water fountain while younger boy watches
+2904129133.jpg, 2, two boys stand near drinking fountain as one takes drink
+2904129133.jpg, 3, two boys are getting drinks out of water fountain
+2904129133.jpg, 4, two boys are at an outdoor water fountain
+1341077576.jpg, 0, man in red shirt and blue pants is going into building while dog watches him
+1341077576.jpg, 1, man walking into building while dog looks at him
+1341077576.jpg, 2, man walks into maroon building as dog looks on
+1341077576.jpg, 3, man in red shirt entering an establishment
+1341077576.jpg, 4, man walking into foreign building
+4024855306.jpg, 0, vegetables on stand with people waking around in the background
+4024855306.jpg, 1, asian people are standing in front of vegetable market
+4024855306.jpg, 2, woman shopping for vegetables at market
+4024855306.jpg, 3, shop on the street selling vegetables
+4024855306.jpg, 4, peoples buy any vegetables
+458004873.jpg, 0, person sitting on tan bench and man in green shirt standing on black and gray floor
+458004873.jpg, 1, topdown view of man sitting on bench inside with standing man facing him
+458004873.jpg, 2, man is sitting on bench facing another man who is standing
+458004873.jpg, 3, man sits on bench while another man walks toward him
+458004873.jpg, 4, this over the top photo shows two men taking break
+3121219649.jpg, 0, three men stand in forest among dense cluster of large tree trunks
+3121219649.jpg, 1, three men in the middle of the woods are looking at tree
+3121219649.jpg, 2, three men look at tree in the woods
+3121219649.jpg, 3, three men are standing in forest
+3121219649.jpg, 4, three men examine tree
+6917596231.jpg, 0, six men appear to be reacting to the ground punch of man dressed in black as beautiful blue pervades the ocean and sky that seem to merge with beach
+6917596231.jpg, 1, seven young men on the beach playing game of balance and skill involving concentric circles drawn in the sand about three feet apart
+6917596231.jpg, 2, group of people are posing as though flung back by the shock wave of someone punching the ground
+6917596231.jpg, 3, an all male crowd on beach are throwing themselves backward as one kneels in the middle
+6917596231.jpg, 4, group of people on beach are simulating an earthshattering punch
+6888808971.jpg, 0, mailman with rolling mailbag smiling at the camera in front of wall topped with an iron decorative fence
+6888808971.jpg, 1, postal carrier with big smile stands on the sidewalk with his cart of mail
+6888808971.jpg, 2, smiling post office worker proudly shows off his four wheeled mailbag carrier
+6888808971.jpg, 3, mailman poses with his cart in front of residential building
+6888808971.jpg, 4, mailman wheeling his bag of mail
+2705101597.jpg, 0, boy in red shirt with white stripes jeans and red hat is throwing blue bowling ball down the lane at bowling alley
+2705101597.jpg, 1, young man in red striped shirt and blue jeans is bowling with blue ball at bowling alley
+2705101597.jpg, 2, boy in red cap rolls his bowling ball down the alley
+2705101597.jpg, 3, the blue ball rolls steadily towards the pins
+2705101597.jpg, 4, man in red hat and shirt bowls
+5491397203.jpg, 0, middleaged man wearing baseball cap turned backwards black shirt and blue shorts who is driving boat which has wooden steering wheel with the british flag flown in the background
+5491397203.jpg, 1, bearded man wearing blue striped shorts dark teeshirt and backwards baseball cap stands at the wheel of ship flying tattered red flagon open water
+5491397203.jpg, 2, man in backwards baseball cap black shirt and blue shorts behind the steering wheel of boat with flag behind him
+5491397203.jpg, 3, an older gentleman poses at the helm of boat
+5491397203.jpg, 4, man is navigating boat
+3504379205.jpg, 0, two women look at table with assorted items on it in some sort of market that others are currently browsing
+3504379205.jpg, 1, two women looking at food vendor considering if they want to buy something
+3504379205.jpg, 2, tourists at flea market bartering for souvenirs
+3504379205.jpg, 3, people are shopping in an open air market
+3504379205.jpg, 4, group of people eat food inside mall
