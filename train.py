@@ -44,8 +44,8 @@ def load_clean_descriptions(filename, dataset):
 
     for line in doc:
         # split line by white space
-        image_id, image_desc = line.split(
-            " ")[0], " ".join(line.split(" ")[1:])
+        image_id, image_desc_id, image_desc = line.split(" ")[0], line.split(" ")[
+            1], " ".join(line.split(" ")[2:])
 
         # skip images not in the set
         if image_id in dataset:
@@ -175,7 +175,7 @@ def data_generator(descriptions, photos, tokenizer, max_length, vocab_size, n_it
 # train dataset
 
 # load training dataset
-train_filename = 'dataset/splits/captions.train.txt'
+train_filename = 'subset_dataset/splits/subset_captions.train.txt'
 
 train = load_set(train_filename)
 print('Dataset: %d' % len(train))
@@ -194,7 +194,7 @@ max_length = max_length(train_descriptions)
 print('Description Length: %d' % max_length)
 
 # photo features
-train_features = load_photo_features('features.pickle', train)
+train_features = load_photo_features('features.pkl', train)
 print('Photos: train=%d' % len(train_features))
 
 

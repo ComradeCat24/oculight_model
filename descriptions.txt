@@ -1,4 +1,3 @@
-image_name, comment_number, comment
 3647446816.jpg, 0, two girls play softball one slides into plate as other fails to catch ball
 3647446816.jpg, 1, two girls are playing softball and one is sliding to the home plate
 3647446816.jpg, 2, runner is safe at home plate at youth softball game

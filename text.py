@@ -21,7 +21,10 @@ def load_descriptions(doc):
     descriptions.
     """
     mapping = dict()
-    for line in doc.split('\n'):
+    for i, line in enumerate(doc.split('\n')):
+        # skip the first iteration (removing header)
+        if i == 0:
+            continue
         tokens = line.split(',')
         if len(tokens) < 3:
             continue

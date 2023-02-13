@@ -22,8 +22,9 @@ def split_data(caption_file, test_size=0.2, validation_size=0.2):
     test_file = os.path.join(splits_dir, f"{base_file_name}.test.txt")
 
     # Load data
-    data = pd.read_csv('descriptions.txt', delimiter=',', skiprows=[0], header=None, names=[
+    data = pd.read_csv('descriptions.txt', delimiter=',',  header=None, names=[
                        'image_name', 'comment_number', 'comment'])
+    # skiprows=[0],
     data = data.drop_duplicates(subset=["image_name"], keep='first')
     print(data)
 
