@@ -1,7 +1,7 @@
 import os
 import random
 import numpy as np
-from pickle import load
+import pickle
 from collections import defaultdict
 from keras.preprocessing.text import Tokenizer
 from keras.utils import to_categorical, plot_model, pad_sequences
@@ -30,7 +30,7 @@ def load_set(filename):
         lines = file.readlines()
 
     # get the image identifier
-    dataset = {os.path.splitext(line.strip())[0] for line in lines}
+    dataset = [os.path.splitext(line.strip())[0] for line in lines]
     return dataset
 
 
@@ -44,7 +44,7 @@ def load_clean_descriptions(filename, dataset):
 
     for line in doc:
         # split line by white space
-        image_id, image_desc_id, image_desc = line.split(" ")[0], line.split(" ")[
+        image_id, image_desc_id, image_desc = line.split(" ")[0].split(".")[0], line.split(" ")[
             1], " ".join(line.split(" ")[2:])
 
         # skip images not in the set
@@ -62,14 +62,21 @@ def load_clean_descriptions(filename, dataset):
 def load_photo_features(filename, dataset):
     try:
         with open(filename, 'rb') as f:
-            all_features = load(f)
+            all_features = pickle.load(f)
     except FileNotFoundError:
         print(f"{filename} not found.")
         return None
 
-    all_features = {k.split('/')[-1]: v for k, v in all_features.items()}
+    # Extract only the keys in the dataset and split the keys to get the image IDs
+    # features = {k.split('/')[-1]: v for k, v in all_features.items() if k.split('/')[-1] in dataset}
 
-    return {k: all_features[k] for k in dataset if k in all_features}
+    features = {}
+    for k, v in all_features.items():
+        key = k.split('/')[-1]
+        if key in dataset:
+            features[key] = v
+
+    return features
 
 
 # covert a dictionary of clean descriptions to a list of descriptions
@@ -86,6 +93,11 @@ def create_tokenizer(descriptions, num_words=None):
     tokenizer = Tokenizer(
         num_words=num_words, filters='!"#$%&()*+,-./:;<=>?@[\]^_`{|}~', lower=True)
     tokenizer.fit_on_texts(lines)
+
+    # save the tokenizer to a file
+    with open('tokenizer.pkl', 'wb') as handle:
+        pickle.dump(tokenizer, handle, protocol=pickle.HIGHEST_PROTOCOL)
+
     return tokenizer
 
 
@@ -98,18 +110,21 @@ def max_length(descriptions):
 # create sequences of images, input sequences and output words for an image
 def create_sequences(tokenizer, max_length, desc_list, photo, vocab_size):
     X1, X2, y = [], [], []
-    # encode the sequence
-    seq = tokenizer.texts_to_sequences(desc_list)
-    # use list comprehension to iterate over sequences and descriptions
-    for i in range(1, len(seq[0]) + 1):
-        in_seq = [s[:i] for s in seq]
-        in_seq = pad_sequences(in_seq, maxlen=max_length)
-        out_seq = [s[i:] for s in seq]
-        out_seq = to_categorical(out_seq, num_classes=vocab_size)
-        # store
-        X1.append(np.array([photo] * len(in_seq)))
-        X2.append(np.array(in_seq))
-        y.append(np.array(out_seq))
+    for desc in desc_list:
+        # encode the sequence
+        seq = tokenizer.texts_to_sequences([desc])[0]
+        # split one sequence into multiple X,y pairs
+        for i in range(1, len(seq)):
+            # split into input and output pair
+            in_seq, out_seq = seq[:i], seq[i]
+            # pad input sequence
+            in_seq = pad_sequences([in_seq], maxlen=max_length)[0]
+            # encode output sequence
+            out_seq = to_categorical([out_seq], num_classes=vocab_size)[0]
+            # store
+            X1.append(photo[0])
+            X2.append(in_seq)
+            y.append(out_seq)
 
     return np.array(X1), np.array(X2), np.array(y)
 
@@ -143,10 +158,6 @@ def define_model(vocab_size, max_length):
     # summarize model
     model.summary()
     # plot_model(model, to_file='model.png', show_shapes=True)
-
-    # earlystop = EarlyStopping(
-    #     monitor='val_loss', min_delta=0, patience=3, verbose=0, mode='auto')
-    # callbacks_list = [earlystop]
 
     return model
 

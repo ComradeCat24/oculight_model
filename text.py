@@ -29,9 +29,8 @@ def load_descriptions(doc):
         if len(tokens) < 3:
             continue
         image_id, image_desc_id, *image_desc = tokens
-        # image_id = image_id.split('.')[0]
-        image_id = image_id
-        image_desc_id = image_desc_id.strip()
+        # image_id = image_id.split('.')[0] # w/ remove extension from image
+        image_desc_id = image_desc_id.strip()  # w/o remove extension from image
         image_desc = ', '.join(image_desc).strip()
         if image_id not in mapping:
             mapping[image_id] = []
