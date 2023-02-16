@@ -6,7 +6,7 @@ from collections import defaultdict
 from keras.preprocessing.text import Tokenizer
 from keras.utils import to_categorical, plot_model, pad_sequences
 from keras.models import Model
-from keras.layers import Input, Dense, LSTM, Embedding, Dropout, Add
+from keras.layers import Input, Dense, LSTM, Embedding, Dropout, TimeDistributed, GlobalMaxPooling1D, Concatenate
 from keras.callbacks import ModelCheckpoint, EarlyStopping
 from keras.regularizers import l2
 
@@ -131,28 +131,26 @@ def create_sequences(tokenizer, max_length, desc_list, photo, vocab_size):
 
 # define the captioning model
 def define_model(vocab_size, max_length):
-    # feature extractor model
-    inputs1 = Input(shape=(4096,))
-    fe1 = Dropout(0.5)(inputs1)
-    fe2 = Dense(256, activation='relu', kernel_regularizer=l2(0.01))(fe1)
 
-    # sequence model
-    inputs2 = Input(shape=(max_length,))
+    inputs1 = Input(shape=(7, 1280))
+    fe1 = TimeDistributed(Dropout(0.5))(inputs1)
+    fe2 = TimeDistributed(Dense(256, activation='relu',
+                          kernel_regularizer=l2(0.01)))(fe1)
+    fe3 = GlobalMaxPooling1D()(fe2)
+
+    inputs2 = Input(shape=(max_length))
     se1 = Embedding(vocab_size, 256, mask_zero=True)(inputs2)
     se2 = Dropout(0.5)(se1)
-    se3 = LSTM(256)(se2)
+    se3 = LSTM(256, return_sequences=True)(se2)
+    se4 = GlobalMaxPooling1D()(se3)
 
-    # decoder model
-    decoder1 = Add()([fe2, se3])
+    decoder1 = Concatenate()([fe3, se4])
     decoder2 = Dense(256, activation='relu',
                      kernel_regularizer=l2(0.01))(decoder1)
-
     outputs = Dense(vocab_size, activation='softmax')(decoder2)
 
-    # tie it together [image, seq] [word]
     model = Model(inputs=[inputs1, inputs2], outputs=outputs)
 
-    # compile model
     model.compile(loss='categorical_crossentropy', optimizer='adam')
 
     # summarize model
@@ -177,6 +175,12 @@ def data_generator(descriptions, photos, tokenizer, max_length, vocab_size, n_it
                 photo = photos[key][0]
                 in_img, in_seq, out_word = create_sequences(
                     tokenizer, max_length, descriptions[key], photo, vocab_size)
+                # print(f"in_img has shape of {in_img.shape}")
+                # print(f"in_img has {in_img}")
+                # print(f"in_seq has shape of {in_seq.shape}")
+                # print(f"in_seq has {in_seq}")
+                # print(f"out_word has shape of {out_word.shape}")
+                # print(f"out_word has {out_word}")
                 yield [in_img, in_seq], out_word
                 i += 1
             except Exception as e:
@@ -215,7 +219,7 @@ print('Photos: train=%d' % len(train_features))
 model = define_model(vocab_size, max_length)
 
 # train the model, run epochs manually and save after each epoch
-epochs = 20
+epochs = 15
 steps_per_epoch = len(train_descriptions)
 
 # create the data generator
@@ -224,9 +228,10 @@ train_generator = data_generator(
 
 # create callbacks list
 callbacks_list = [
-    EarlyStopping(monitor='val_loss', patience=3),
+    EarlyStopping(monitor='loss', patience=3),
     ModelCheckpoint(
-        filepath='model_checkpoints/model_{epoch:02d}.h5', save_best_only=True, monitor='val_loss')
+        filepath='model_checkpoints/model.h5', save_best_only=True, monitor='loss')
+    # ModelCheckpoint(filepath='model_checkpoints/model_{epoch:02d}.h5', save_best_only=True, monitor='loss')
 ]
 
 # fit the model
