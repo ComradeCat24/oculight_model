@@ -87,18 +87,14 @@ def to_lines(descriptions):
     return all_desc
 
 
-# fit a tokenizer given caption descriptions
-def create_tokenizer(descriptions, num_words=None):
-    lines = to_lines(descriptions)
-    tokenizer = Tokenizer(
-        num_words=num_words, filters='!"#$%&()*+,-./:;<=>?@[\]^_`{|}~', lower=True)
-    tokenizer.fit_on_texts(lines)
-
-    # save the tokenizer to a file
-    with open('tokenizer.pkl', 'wb') as handle:
-        pickle.dump(tokenizer, handle, protocol=pickle.HIGHEST_PROTOCOL)
-
-    return tokenizer
+# load the tokenizer to a file
+def load_tokenizer(filename):
+    try:
+        with open(filename, 'rb') as f:
+            return pickle.load(f)
+    except FileNotFoundError:
+        print(f"{filename} not found.")
+        return None
 
 
 # calculate the length of the description with the most words
@@ -200,7 +196,7 @@ train_descriptions = load_clean_descriptions('descriptions.txt', train)
 print('Descriptions: train=%d' % len(train_descriptions))
 
 # prepare tokenizer
-tokenizer = create_tokenizer(train_descriptions)
+tokenizer = load_tokenizer('tokenizer.pkl')
 vocab_size = len(tokenizer.word_index) + 1
 print('Vocabulary Size: %d' % vocab_size)
 
