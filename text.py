@@ -1,4 +1,7 @@
 import string
+import pickle
+from collections import defaultdict
+from keras.preprocessing.text import Tokenizer
 
 
 def load_doc(filename):
@@ -20,7 +23,7 @@ def load_descriptions(doc):
     Loads a document and returns a mapping of image IDs to their corresponding
     descriptions.
     """
-    mapping = dict()
+    mapping = defaultdict()
     for i, line in enumerate(doc.split('\n')):
         # skip the first iteration (removing header)
         if i == 0:
@@ -80,6 +83,49 @@ def save_descriptions(descriptions, filename):
         file.write(data)
 
 
+# covert a dictionary of clean descriptions to a list of descriptions
+def to_lines(descriptions):
+    all_desc = []
+    for key, values in descriptions.items():
+        all_desc.extend(values)
+    return all_desc
+
+
+# load clean descriptions into memory
+def load_clean_descriptions(filename):
+    # load document
+    with open(filename, "r", encoding='utf-8') as file:
+        doc = file.readlines()
+
+    descriptions = defaultdict(list)
+
+    for line in doc:
+        # split line by white space
+        image_id, image_desc_id, image_desc = line.split(" ")[0].split(".")[0], line.split(" ")[
+            1], " ".join(line.split(" ")[2:])
+
+        # wrap description in tokens
+        desc = 'startseq ' + image_desc.strip() + ' endseq'
+
+        # store
+        descriptions[image_id].append(desc)
+
+    return descriptions
+
+
+def create_tokenizer(descriptions, num_words=None):
+    lines = to_lines(descriptions)
+    tokenizer = Tokenizer(
+        num_words=num_words, filters='!"#$%&()*+,-./:;<=>?@[\]^_`{|}~', lower=True)
+    tokenizer.fit_on_texts(lines)
+
+    # save the tokenizer to a file
+    with open('tokenizer.pkl', 'wb') as handle:
+        pickle.dump(tokenizer, handle, protocol=pickle.HIGHEST_PROTOCOL)
+
+    return tokenizer
+
+
 filename = 'subset_dataset/subset_captions.txt'
 doc = load_doc(filename)
 descriptions = load_descriptions(doc)
@@ -90,3 +136,7 @@ vocabulary = to_vocabulary(descriptions)
 # print(vocabulary)
 print(len(vocabulary))
 save_descriptions(descriptions, 'descriptions.txt')
+
+# prepare tokenizer
+clean_descriptions = load_clean_descriptions('descriptions.txt')
+create_tokenizer(clean_descriptions)
