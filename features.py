@@ -1,7 +1,9 @@
+from collections import OrderedDict
 from os import listdir
 from pickle import dump
-# from keras.applications.vgg16 import VGG16, preprocess_input
-from keras.applications.mobilenet_v2 import MobileNetV2, preprocess_input
+from keras.applications.vgg16 import VGG16, preprocess_input
+import numpy as np
+# from keras.applications.mobilenet_v2 import MobileNetV2, preprocess_input
 from keras.preprocessing.image import ImageDataGenerator
 from keras.utils import load_img, img_to_array
 from keras.models import Model
@@ -9,13 +11,12 @@ from keras.models import Model
 
 def extract_features(directory):
 
-    # model = VGG16(include_top=False, input_shape=(224, 224, 3))
+    model = VGG16(include_top=False, input_shape=(224, 224, 3))
 
-    model = MobileNetV2(weights='imagenet', include_top=False)
+    # model = MobileNetV2(weights='imagenet', include_top=False)
     model = Model(inputs=model.inputs, outputs=model.layers[-2].output)
     model.summary()
 
-    features = dict()
     datagen = ImageDataGenerator(preprocessing_function=preprocess_input)
 
     def feature_generator(directory):
@@ -26,11 +27,14 @@ def extract_features(directory):
             image = img_to_array(image)
             image = image.reshape(
                 (1, image.shape[0], image.shape[1], image.shape[2]))
-            feature = model.predict(datagen.flow(image, batch_size=32))
+            feature = model.predict(datagen.flow(
+                image, batch_size=32)).flatten()
+            print(np.array(feature).shape)
+
             print('>%s' % name)
             yield image_id, feature
 
-    features = dict(feature_generator(directory))
+    features = OrderedDict(feature_generator(directory))
     return features
 
 
