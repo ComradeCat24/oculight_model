@@ -2,11 +2,12 @@ import os
 import random
 import numpy as np
 import pickle
+import matplotlib.pyplot as plt
 from collections import defaultdict
 from keras.preprocessing.text import Tokenizer
 from keras.utils import to_categorical, plot_model, pad_sequences
 from keras.models import Model
-from keras.layers import Input, Dense, LSTM, Embedding, Dropout, TimeDistributed, GlobalMaxPooling1D, Concatenate
+from keras.layers import Input, Dense, LSTM, Embedding, Dropout, Add, TimeDistributed, GlobalMaxPooling1D, Concatenate
 from keras.callbacks import ModelCheckpoint, EarlyStopping
 from keras.regularizers import l2
 
@@ -114,41 +115,45 @@ def create_sequences(tokenizer, max_length, desc_list, photo, vocab_size):
             # split into input and output pair
             in_seq, out_seq = seq[:i], seq[i]
             # pad input sequence
-            in_seq = pad_sequences([in_seq], maxlen=max_length)[0]
+            in_seq = pad_sequences([in_seq], maxlen=max_length)[0].flatten()
             # encode output sequence
             out_seq = to_categorical([out_seq], num_classes=vocab_size)[0]
             # store
-            X1.append(photo[0])
+            X1.append(photo)
             X2.append(in_seq)
             y.append(out_seq)
 
+    print(np.array(X1).shape)
+    print(np.array(X2).shape)
+    print(np.array(y).shape)
     return np.array(X1), np.array(X2), np.array(y)
 
 
 # define the captioning model
 def define_model(vocab_size, max_length):
 
-    inputs1 = Input(shape=(7, 1280))
-    fe1 = TimeDistributed(Dropout(0.5))(inputs1)
-    fe2 = TimeDistributed(Dense(256, activation='relu',
-                          kernel_regularizer=l2(0.01)))(fe1)
-    fe3 = GlobalMaxPooling1D()(fe2)
+    # feature extractor model
+    inputs1 = Input(shape=(100352,))
+    fe1 = Dropout(0.5)(inputs1)
+    fe2 = Dense(256, activation='relu', kernel_regularizer=l2(0.01))(fe1)
 
+    # sequence model
     inputs2 = Input(shape=(max_length))
     se1 = Embedding(vocab_size, 256, mask_zero=True)(inputs2)
     se2 = Dropout(0.5)(se1)
-    se3 = LSTM(256, return_sequences=True)(se2)
-    se4 = GlobalMaxPooling1D()(se3)
+    se3 = LSTM(256)(se2)
 
-    decoder1 = Concatenate()([fe3, se4])
+    # decoder model
+    decoder1 = Add()([fe2, se3])
     decoder2 = Dense(256, activation='relu',
                      kernel_regularizer=l2(0.01))(decoder1)
-    outputs = Dense(vocab_size, activation='softmax')(decoder2)
 
+    outputs = Dense(vocab_size, activation='softmax')(decoder2)
+    # tie it together [image, seq] [word]
     model = Model(inputs=[inputs1, inputs2], outputs=outputs)
 
-    model.compile(loss='categorical_crossentropy', optimizer='adam')
-
+    model.compile(optimizer='adam',
+                  loss='categorical_crossentropy', metrics=['accuracy'])
     # summarize model
     model.summary()
     # plot_model(model, to_file='model.png', show_shapes=True)
@@ -156,7 +161,37 @@ def define_model(vocab_size, max_length):
     return model
 
 
-# data generator, intended to be used in a call to model.fit_generator()
+# def define_model(vocab_size, max_length):
+#     inputs1 = Input(shape=(7, 1280))
+#     fe1 = TimeDistributed(Dropout(0.5))(inputs1)
+#     fe2 = TimeDistributed(Dense(256, activation='relu',
+#                           kernel_regularizer=l2(0.01)))(fe1)
+#     fe3 = GlobalMaxPooling1D()(fe2)
+
+#     inputs2 = Input(shape=(max_length))
+#     se1 = Embedding(vocab_size, 256, mask_zero=True)(inputs2)
+#     se2 = Dropout(0.5)(se1)
+#     se3 = LSTM(256, return_sequences=True)(se2)
+#     se4 = GlobalMaxPooling1D()(se3)
+
+#     decoder1 = Concatenate()([fe3, se4])
+#     decoder2 = Dense(256, activation='relu',
+#                      kernel_regularizer=l2(0.01))(decoder1)
+#     outputs = Dense(vocab_size, activation='softmax')(decoder2)
+
+#     model = Model(inputs=[inputs1, inputs2], outputs=outputs)
+
+#     model.compile(optimizer='adam', loss='categorical_crossentropy',
+#                   metrics=['accuracy'])
+
+#     # summarize model
+#     model.summary()
+#     # plot_model(model, to_file='model.png', show_shapes=True)
+
+#     return model
+
+
+# data generator, intended to be used in a call to model.fit()
 def data_generator(descriptions, photos, tokenizer, max_length, vocab_size, n_iterations=None):
     keys = list(descriptions.keys())
     i = 0
@@ -168,7 +203,7 @@ def data_generator(descriptions, photos, tokenizer, max_length, vocab_size, n_it
             print(key)
             try:
                 # retrieve the photo feature
-                photo = photos[key][0]
+                photo = photos[key]
                 in_img, in_seq, out_word = create_sequences(
                     tokenizer, max_length, descriptions[key], photo, vocab_size)
                 # print(f"in_img has shape of {in_img.shape}")
@@ -215,7 +250,7 @@ print('Photos: train=%d' % len(train_features))
 model = define_model(vocab_size, max_length)
 
 # train the model, run epochs manually and save after each epoch
-epochs = 15
+epochs = 20
 steps_per_epoch = len(train_descriptions)
 
 # create the data generator
@@ -231,10 +266,36 @@ callbacks_list = [
 ]
 
 # fit the model
-model.fit_generator(
-    generator=train_generator,
+model.fit(
+    x=train_generator,
     steps_per_epoch=steps_per_epoch,
     epochs=epochs,
     verbose=1,
+    # use_multiprocessing=True,
     callbacks=callbacks_list,
 )
+
+# Get the training loss and accuracy
+train_loss = model.history.history['loss']
+train_acc = model.history.history['accuracy']
+
+# Get the number of epochs
+epochs = range(1, len(train_loss) + 1)
+
+# Plot training loss and accuracy
+fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(8, 8))
+
+ax1.plot(epochs, train_loss, 'bo', label='Training loss')
+ax1.set_title('Training loss')
+ax1.set_xlabel('Epochs')
+ax1.set_ylabel('Loss')
+ax1.legend()
+
+ax2.plot(epochs, train_acc, 'bo', label='Training accuracy')
+ax2.set_title('Training accuracy')
+ax2.set_xlabel('Epochs')
+ax2.set_ylabel('Accuracy')
+ax2.legend()
+
+plt.tight_layout()
+plt.savefig('training_plots.png')
