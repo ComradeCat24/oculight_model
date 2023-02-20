@@ -12,8 +12,9 @@ from keras.models import Model
 def extract_features(directory):
 
     model = VGG16(include_top=False, input_shape=(224, 224, 3))
-
+    # OR
     # model = MobileNetV2(weights='imagenet', include_top=False)
+
     model = Model(inputs=model.inputs, outputs=model.layers[-2].output)
     model.summary()
 
