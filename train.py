@@ -7,9 +7,12 @@ from collections import defaultdict
 from keras.preprocessing.text import Tokenizer
 from keras.utils import to_categorical, plot_model, pad_sequences
 from keras.models import Model
-from keras.layers import Input, Dense, LSTM, Embedding, Dropout, Add, TimeDistributed, GlobalMaxPooling1D, Concatenate
+from keras.layers import Input, Dense, LSTM, Embedding, Dropout, Add, TimeDistributed, GlobalMaxPooling1D, Concatenate, BatchNormalization
 from keras.callbacks import ModelCheckpoint, EarlyStopping
+import warnings
 from keras.regularizers import l2
+
+warnings.filterwarnings('ignore')
 
 
 # load doc into memory
@@ -36,7 +39,7 @@ def load_set(filename):
 
 
 # load clean descriptions into memory
-def load_clean_descriptions(filename, dataset):
+def load_clean_descriptions(filename, dataset=None):
     # load document
     with open(filename, "r", encoding='utf-8') as file:
         doc = file.readlines()
@@ -48,8 +51,9 @@ def load_clean_descriptions(filename, dataset):
         image_id, image_desc_id, image_desc = line.split(" ")[0].split(".")[0], line.split(" ")[
             1], " ".join(line.split(" ")[2:])
 
-        # skip images not in the set
-        if image_id in dataset:
+        # if dataset is not empty or if the image is in the dataset, store the description
+        if not dataset or image_id in dataset:
+
             # wrap description in tokens
             desc = 'startseq ' + image_desc.strip() + ' endseq'
 
@@ -67,9 +71,6 @@ def load_photo_features(filename, dataset):
     except FileNotFoundError:
         print(f"{filename} not found.")
         return None
-
-    # Extract only the keys in the dataset and split the keys to get the image IDs
-    # features = {k.split('/')[-1]: v for k, v in all_features.items() if k.split('/')[-1] in dataset}
 
     features = {}
     for k, v in all_features.items():
@@ -123,37 +124,46 @@ def create_sequences(tokenizer, max_length, desc_list, photo, vocab_size):
             X2.append(in_seq)
             y.append(out_seq)
 
-    print(np.array(X1).shape)
-    print(np.array(X2).shape)
-    print(np.array(y).shape)
+    # print(np.array(X1).shape)
+    # print(np.array(X2).shape)
+    # print(np.array(y).shape)
     return np.array(X1), np.array(X2), np.array(y)
 
 
 # define the captioning model
 def define_model(feature_shape, vocab_size, max_length):
 
-    # feature extractor model
-    inputs1 = Input(shape=(feature_shape))
-    fe1 = Dropout(0.5)(inputs1)
-    fe2 = Dense(256, activation='relu', kernel_regularizer=l2(0.01))(fe1)
+    input_image = Input(shape=(feature_shape))
+    droplayer1 = Dropout(0.5)(input_image)
+    BN = BatchNormalization()(droplayer1)
+    fimage1 = Dense(256, activation='relu', name="ImageFeature1",
+                    kernel_regularizer=l2(0.01))(BN)
+    droplayer1 = Dropout(0.5)(fimage1)
+    BN = BatchNormalization()(droplayer1)
+    fimage1 = Dense(256, activation='relu', name="ImageFeature3",
+                    kernel_regularizer=l2(0.01))(BN)
+    droplayer2 = Dropout(0.5)(fimage1)
+    BN = BatchNormalization()(droplayer2)
+    fimage2 = Dense(256, activation='relu')(BN)
 
     # sequence model
-    inputs2 = Input(shape=(max_length))
-    se1 = Embedding(vocab_size, 256, mask_zero=True)(inputs2)
-    se2 = Dropout(0.5)(se1)
-    se3 = LSTM(256)(se2)
+    input_txt = Input(shape=(max_length))
+    ftxt = Embedding(vocab_size, 64, mask_zero=True)(input_txt)
+    droplayer_ = Dropout(0.5)(ftxt)
+    BN = BatchNormalization()(droplayer_)
+    ftxt = LSTM(256, name="CaptionFeature")(BN)
 
-    # decoder model
-    decoder1 = Add()([fe2, se3])
-    decoder2 = Dense(256, activation='relu',
-                     kernel_regularizer=l2(0.01))(decoder1)
+    # combined model for decoder
+    decoder = Add()([ftxt, fimage2])
+    decoder = Dense(256, activation='relu')(decoder)
+    droplayer1 = Dropout(0.5)(decoder)
+    BN = BatchNormalization()(droplayer1)
+    output = Dense(vocab_size, activation='softmax')(BN)
 
-    outputs = Dense(vocab_size, activation='softmax')(decoder2)
-    # tie it together [image, seq] [word]
-    model = Model(inputs=[inputs1, inputs2], outputs=outputs)
+    model = Model(inputs=[input_image, input_txt], outputs=output)
 
-    model.compile(optimizer='adam',
-                  loss='categorical_crossentropy', metrics=['accuracy'])
+    model.compile(loss='categorical_crossentropy',
+                  optimizer='adam', metrics=['accuracy'])
 
     # summarize model
     model.summary()
@@ -177,12 +187,6 @@ def data_generator(descriptions, photos, tokenizer, max_length, vocab_size, n_it
                 photo = photos[key]
                 in_img, in_seq, out_word = create_sequences(
                     tokenizer, max_length, descriptions[key], photo, vocab_size)
-                # print(f"in_img has shape of {in_img.shape}")
-                # print(f"in_img has {in_img}")
-                # print(f"in_seq has shape of {in_seq.shape}")
-                # print(f"in_seq has {in_seq}")
-                # print(f"out_word has shape of {out_word.shape}")
-                # print(f"out_word has {out_word}")
                 yield [in_img, in_seq], out_word
                 i += 1
             except Exception as e:
@@ -207,7 +211,7 @@ vocab_size = len(tokenizer.word_index) + 1
 print('Vocabulary Size: %d' % vocab_size)
 
 # determine the maximum sequence length
-max_length = max_length(train_descriptions)
+max_length = max_length(load_clean_descriptions('descriptions.txt'))
 print('Description Length: %d' % max_length)
 
 # photo features
@@ -218,58 +222,72 @@ _, image_feature = next(iter(train_features.items()))
 feature_shape = np.array(image_feature).shape
 print('Photos: shape=%d' % feature_shape)
 
-# # fit model
+# fit model
 
-# # define the model
-# model = define_model(feature_shape, vocab_size, max_length)
+# define the model
+model = define_model(feature_shape, vocab_size, max_length)
 
-# # train the model, run epochs manually and save after each epoch
-# epochs = 20
-# steps_per_epoch = len(train_descriptions)
+# train the model, run epochs manually and save after each epoch
+epochs = 20
+steps_per_epoch = len(train_descriptions)
 
-# # create the data generator
-# train_generator = data_generator(
-#     train_descriptions, train_features, tokenizer, max_length, vocab_size)
+# create the data generator
+train_generator = data_generator(
+    train_descriptions, train_features, tokenizer, max_length, vocab_size)
 
-# # create callbacks list
-# callbacks_list = [
-#     EarlyStopping(monitor='loss', patience=3),
-#     # ModelCheckpoint( filepath='model_checkpoints/model_{epoch:02d}.h5', save_best_only=True, monitor='val_loss', mode='min')
-#     ModelCheckpoint(
-#         filepath='model_checkpoints/model_{epoch:02d}.h5', save_best_only=True, monitor='val_acc', mode='max')
-# ]
+# create callbacks list
+callbacks_list = [
+    # for loss
+    # EarlyStopping(monitor='loss', mode='min', patience=3),
+    # ModelCheckpoint(filepath='model_checkpoints/model_{epoch:02d}.h5', save_best_only=True, monitor='loss', mode='min')
 
-# # fit the model
-# model.fit(
-#     x=train_generator,
-#     steps_per_epoch=steps_per_epoch,
-#     epochs=epochs,
-#     verbose=1,
-#     # use_multiprocessing=True,
-#     callbacks=callbacks_list,
-# )
+    # for accuracy
+    EarlyStopping(monitor='accuracy', mode='max', patience=3),
+    ModelCheckpoint(filepath='model_checkpoints/new_model.h5',
+                    save_best_only=True, monitor='accuracy', mode='max')
+]
 
-# # Get the training loss and accuracy
-# train_loss = model.history.history['loss']
-# train_acc = model.history.history['accuracy']
+# fit the model
+model.fit(
+    x=train_generator,
+    steps_per_epoch=steps_per_epoch,
+    epochs=epochs,
+    verbose=1,
+    # use_multiprocessing=True,
+    # workers=num_workers, # specify the number of worker processes to use
+    # max_queue_size=max_queue_size, # specify the maximum size of the generator queue
+    callbacks=callbacks_list,
+)
 
-# # Get the number of epochs
-# epochs = range(1, len(train_loss) + 1)
+print(model.history.history.keys())
 
-# # Plot training loss and accuracy
-# fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(8, 8))
+# Get the training loss and accuracy
+train_loss = model.history.history['loss']
+train_acc = model.history.history['accuracy']
 
-# ax1.plot(epochs, train_loss, 'bo', label='Training loss')
-# ax1.set_title('Training loss')
-# ax1.set_xlabel('Epochs')
-# ax1.set_ylabel('Loss')
-# ax1.legend()
+# Get the number of epochs
+epochs = range(1, len(train_loss) + 1)
 
-# ax2.plot(epochs, train_acc, 'bo', label='Training accuracy')
-# ax2.set_title('Training accuracy')
-# ax2.set_xlabel('Epochs')
-# ax2.set_ylabel('Accuracy')
-# ax2.legend()
+# Calculate the mean training loss and accuracy
+mean_loss = np.mean(train_loss)
+mean_acc = np.mean(train_acc)
 
-# plt.tight_layout()
-# plt.savefig('training_plots.png')
+# Plot training loss and accuracy
+fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(8, 8))
+
+ax1.plot(epochs, train_loss, 'bo', label='Training loss')
+ax1.axhline(mean_loss, color='r', label=f'Mean loss: {mean_loss:.2f}')
+ax1.set_title('Training loss')
+ax1.set_xlabel('Epochs')
+ax1.set_ylabel('Loss')
+ax1.legend()
+
+ax2.plot(epochs, train_acc, 'bo', label='Training accuracy')
+ax2.axhline(mean_acc, color='m', label=f'Mean accuracy: {mean_acc:.2f}')
+ax2.set_title('Training accuracy')
+ax2.set_xlabel('Epochs')
+ax2.set_ylabel('Accuracy')
+ax2.legend()
+
+plt.tight_layout()
+plt.savefig('training_plots.png')
