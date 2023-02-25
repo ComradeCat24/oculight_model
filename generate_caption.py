@@ -1,70 +1,151 @@
-from pickle import load
-from numpy import argmax
-import argparse
-import os
-from gtts.tts import gTTS
-from keras.preprocessing.sequence import pad_sequences
-from keras.applications.vgg16 import VGG16
-from keras.preprocessing.image import load_img
-from keras.preprocessing.image import img_to_array
-from keras.applications.vgg16 import preprocess_input
-from keras.models import Model
-from keras.models import load_model
-from nltk.translate.bleu_score import corpus_bleu
+import sys
+import pickle
+import numpy as np
+from collections import defaultdict
+from keras.models import Model, load_model
+from keras.preprocessing.image import ImageDataGenerator
+# from keras.applications.mobilenet_v2 import MobileNetV2, preprocess_input
+from keras.applications.vgg16 import VGG16, preprocess_input
+from keras.utils import pad_sequences, load_img, img_to_array
 
-# Evaluate Model
- 
-def extract_features(filename):
-	model = VGG16()
-	model = Model(inputs=model.inputs, outputs=model.layers[-2].output)
-	image = load_img(filename, target_size=(224, 224))
-	image = img_to_array(image)
-	image = image.reshape((1, image.shape[0], image.shape[1], image.shape[2]))
-	image = preprocess_input(image)
-	feature = model.predict(image, verbose=0)
-	return feature
- 
-def word_for_id(integer, tokenizer):
-	for word, index in tokenizer.word_index.items():
-		if index == integer:
-			return word
-	return None
 
+# load clean descriptions into memory
+def load_clean_descriptions(filename):
+    # load document
+    with open(filename, "r", encoding='utf-8') as file:
+        doc = file.readlines()
+
+    descriptions = defaultdict(list)
+
+    for line in doc:
+        # split line by white space
+        image_id, _, image_desc = line.split(" ")[0].split(".")[0], line.split(" ")[
+            1], " ".join(line.split(" ")[2:])
+
+        # wrap description in tokens
+        desc = 'startseq ' + image_desc.strip() + ' endseq'
+
+        # store
+        descriptions[image_id].append(desc)
+
+    return descriptions
+
+
+# load photo features
+def extract_photo_features(filename):
+    model = VGG16(include_top=False, input_shape=(224, 224, 3))
+    # OR
+    # model = MobileNetV2(weights='imagenet', include_top=False)
+
+    model = Model(inputs=model.inputs, outputs=model.layers[-2].output)
+
+    datagen = ImageDataGenerator(preprocessing_function=preprocess_input)
+
+    image = load_img(filename, target_size=(224, 224))
+    image = img_to_array(image)
+    image = image.reshape(
+        (1, image.shape[0], image.shape[1], image.shape[2]))
+    feature = model.predict(datagen.flow(
+        image), verbose=0).flatten()
+
+    return np.array(feature)
+
+# covert a dictionary of clean descriptions to a list of descriptions
+
+
+def to_lines(descriptions):
+    all_desc = []
+    for key, values in descriptions.items():
+        all_desc.extend(values)
+    return all_desc
+
+
+# load the tokenizer to a file
+def load_tokenizer(filename):
+    try:
+        with open(filename, 'rb') as f:
+            return pickle.load(f)
+    except FileNotFoundError:
+        print(f"{filename} not found.")
+        return None
+
+
+# calculate the length of the description with the most words
+def max_length(descriptions):
+    lines = to_lines(descriptions)
+    return max(map(lambda x: len(x.split()), lines))
+
+
+def word_for_id(word_id, tokenizer, default='Unknown'):
+    if word_id < 1 or word_id > len(tokenizer.word_index):
+        raise ValueError(
+            f"word_id should be between 1 and {len(tokenizer.word_index)}")
+    return tokenizer.index_word.get(word_id, default)
+
+
+# generate a description for an image
 def generate_desc(model, tokenizer, photo, max_length):
-	in_text = 'startseq'
-	for i in range(max_length):
-		sequence = tokenizer.texts_to_sequences([in_text])[0]
-		sequence = pad_sequences([sequence], maxlen=max_length)
-		yhat = model.predict([photo,sequence], verbose=0)
-		yhat = argmax(yhat)
-		word = word_for_id(yhat, tokenizer)
-		if word is None:
-			break
-		in_text += ' ' + word
-		if word == 'endseq':
-			break
-	return in_text
+    # seed the generation process
+    in_text = 'startseq'
+    # initialize empty list to keep track of predicted words
+    predicted_words = []
+    i = 0
+    photo = photo.reshape(1, photo.shape[0])
+    # use while loop
+    while i < max_length:
+        try:
+            # integer encode input sequence
+            sequence = tokenizer.texts_to_sequences([in_text])[0]
+            # pad input
+            sequence = pad_sequences([sequence], maxlen=max_length)
+            # predict next word
+            yhat = model.predict(
+                [np.array(photo), np.array(sequence)], verbose=0)
+            # print(np.array(yhat))
+            # convert probability to integer
+            yhat = np.argmax(yhat)
+            # map integer to word
+            word = word_for_id(yhat, tokenizer)
+            # stop if we cannot map the word
+            if word is None:
+                break
+            # append as input for generating the next word
+            in_text += ' ' + word
+            # keep track of predicted words
+            predicted_words.append(word)
+            # stop if we predict the end of the sequence
+            if word == 'endseq':
+                break
+            i += 1
+        except Exception as e:
+            print(str(e))
+            print('ERROR')
+            return 'Error Generating Description'
+    # remove 'startseq' from the predicted words
+    predicted_words = predicted_words[1:]
+    # join the predicted words to form a string
+    final_text = " ".join(predicted_words)
+    # remove 'endseq' from the final string
+    final_text = final_text.replace('endseq', '')
+    return final_text
 
-def evaluate_model(model, descriptions, photos, tokenizer, max_length):
-	actual, predicted = list(), list()
-	for key, desc_list in descriptions.items():
-		yhat = generate_desc(model, tokenizer, photos[key], max_length)
-		references = [d.split() for d in desc_list]
-		actual.append(references)
-		predicted.append(yhat.split())
 
-	# calculate BLEU score
-	print('BLEU-1: %f' % corpus_bleu(actual, predicted, weights=(1.0, 0, 0, 0)))
-	print('BLEU-2: %f' % corpus_bleu(actual, predicted, weights=(0.5, 0.5, 0, 0)))
-	print('BLEU-3: %f' % corpus_bleu(actual, predicted, weights=(0.3, 0.3, 0.3, 0)))
-	print('BLEU-4: %f' % corpus_bleu(actual, predicted, weights=(0.25, 0.25, 0.25, 0.25)))
+# load tokenizer
+tokenizer = load_tokenizer('tokenizer.pkl')
 
+# determine the maximum sequence length
+max_length = max_length(load_clean_descriptions('descriptions.txt'))
 
-def generate_captions(photo_path):
-	tokenizer = load(open('tokenizer.pkl', 'rb'))
-	max_length = 34
-	model = load_model('model.h5')
-	photo = extract_features(photo_path)
-	description = generate_desc(model, tokenizer, photo, max_length)
-	description = description[9:-6]
-	return description
+# load the model
+model_filename = 'model_checkpoints/new_model.h5'
+model = load_model(model_filename)
+
+# Loop through all command line arguments
+for i in range(1, len(sys.argv)):
+    # photo feature
+    image_filename = sys.argv[i]
+    photo_feature = extract_photo_features(image_filename)
+
+    # generate description
+    desc = generate_desc(model, tokenizer, photo_feature, max_length)
+    print(desc)
