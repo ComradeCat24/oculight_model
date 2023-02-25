@@ -109,38 +109,27 @@ def word_for_id(word_id, tokenizer, default='Unknown'):
 
 # generate a description for an image
 def generate_desc(model, tokenizer, photo, max_length):
-    print("---1---")
     # seed the generation process
     in_text = 'startseq'
     # initialize empty list to keep track of predicted words
     predicted_words = []
     i = 0
+    photo = photo.reshape(1, photo.shape[0])
     # use while loop
     while i < max_length:
         try:
-            print(in_text)
-            print("---2---")
             # integer encode input sequence
             sequence = tokenizer.texts_to_sequences([in_text])[0]
-            print(sequence)
-            print("---3---")
             # pad input
             sequence = pad_sequences([sequence], maxlen=max_length)
-            print(sequence)
-            print("---4---")
-            print(f"shape of photo is {photo.shape}")
-            print(f"shape of sequence is {sequence.shape}")
-            print("---6---")
             # predict next word
-            yhat = model.predict(np.array([photo, sequence]), verbose=1)
-            print("---7---")
+            yhat = model.predict(
+                [np.array(photo), np.array(sequence)], verbose=0)
+            # print(np.array(yhat))
             # convert probability to integer
             yhat = np.argmax(yhat)
-            print("---8---")
             # map integer to word
-            # word = tokenizer.index_word[yhat]
-            word = word_for_id(yhat)
-            print("---9---")
+            word = word_for_id(yhat, tokenizer)
             # stop if we cannot map the word
             if word is None:
                 break
@@ -152,7 +141,6 @@ def generate_desc(model, tokenizer, photo, max_length):
             if word == 'endseq':
                 break
             i += 1
-            print("---100---")
         except Exception as e:
             print(str(e))
             print('ERROR')
@@ -163,7 +151,7 @@ def generate_desc(model, tokenizer, photo, max_length):
     final_text = " ".join(predicted_words)
     # remove 'endseq' from the final string
     final_text = final_text.replace('endseq', '')
-    return final_text, predicted_words
+    return final_text
 
 
 def calculate_bleu_scores(model, descriptions, photos, tokenizer, max_length):
@@ -172,20 +160,17 @@ def calculate_bleu_scores(model, descriptions, photos, tokenizer, max_length):
     """
     bleu_weights = [(1.0, 0, 0, 0), (0.5, 0.5, 0, 0),
                     (0.3, 0.3, 0.3, 0), (0.25, 0.25, 0.25, 0.25)]
-    actual, predicted = [], []
     for i, (key, desc_list) in enumerate(descriptions.items()):
+        actual, predicted = [], []
         # yhat = generate_desc(model, tokenizer, desc_list, photos[key][0], max_length)
         print(key)
-        print(desc_list)
-        print("START")
         yhat = generate_desc(model, tokenizer, photos[key], max_length)
-        print("END")
-    #     actual.append([d.split() for d in desc_list])
-    #     predicted.append(yhat.split())
-    #     print(f"actual: {actual} \npredicted: {predicted}")
-    # bleu_scores = {f"BLEU-{i+1}": corpus_bleu(actual, predicted, weights=w)
-    #                for i, w in enumerate(bleu_weights)}
-    # print(bleu_scores)
+        actual.append([d.split() for d in desc_list])
+        predicted.append(yhat.split())
+        print(f"actual: {actual} \n\npredicted: {predicted} \n\nEND")
+    #     bleu_scores = {f"BLEU-{i+1}": corpus_bleu(actual, predicted, weights=w)
+    #                    for i, w in enumerate(bleu_weights)}
+    #     print(bleu_scores)
     # return bleu_scores
     return -1
 
