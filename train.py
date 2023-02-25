@@ -135,30 +135,30 @@ def define_model(feature_shape, vocab_size, max_length):
 
     input_image = Input(shape=(feature_shape))
     droplayer1 = Dropout(0.5)(input_image)
-    BN = BatchNormalization()(droplayer1)
+    bn = BatchNormalization()(droplayer1)
     fimage1 = Dense(256, activation='relu', name="ImageFeature1",
-                    kernel_regularizer=l2(0.01))(BN)
+                    kernel_regularizer=l2(0.01))(bn)
     droplayer1 = Dropout(0.5)(fimage1)
-    BN = BatchNormalization()(droplayer1)
+    bn = BatchNormalization()(droplayer1)
     fimage1 = Dense(256, activation='relu', name="ImageFeature3",
-                    kernel_regularizer=l2(0.01))(BN)
+                    kernel_regularizer=l2(0.01))(bn)
     droplayer2 = Dropout(0.5)(fimage1)
-    BN = BatchNormalization()(droplayer2)
-    fimage2 = Dense(256, activation='relu')(BN)
+    bn = BatchNormalization()(droplayer2)
+    fimage2 = Dense(256, activation='relu')(bn)
 
     # sequence model
     input_txt = Input(shape=(max_length))
     ftxt = Embedding(vocab_size, 64, mask_zero=True)(input_txt)
     droplayer_ = Dropout(0.5)(ftxt)
-    BN = BatchNormalization()(droplayer_)
-    ftxt = LSTM(256, name="CaptionFeature")(BN)
+    bn = BatchNormalization()(droplayer_)
+    ftxt = LSTM(256, name="CaptionFeature")(bn)
 
     # combined model for decoder
     decoder = Add()([ftxt, fimage2])
     decoder = Dense(256, activation='relu')(decoder)
     droplayer1 = Dropout(0.5)(decoder)
-    BN = BatchNormalization()(droplayer1)
-    output = Dense(vocab_size, activation='softmax')(BN)
+    bn = BatchNormalization()(droplayer1)
+    output = Dense(vocab_size, activation='softmax')(bn)
 
     model = Model(inputs=[input_image, input_txt], outputs=output)
 
@@ -243,7 +243,7 @@ callbacks_list = [
 
     # for accuracy
     EarlyStopping(monitor='accuracy', mode='max', patience=3),
-    ModelCheckpoint(filepath='model_checkpoints/new_model.h5',
+    ModelCheckpoint(filepath='model_checkpoints/model.h5',
                     save_best_only=True, monitor='accuracy', mode='max')
 ]
 
