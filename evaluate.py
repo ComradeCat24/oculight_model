@@ -1,25 +1,11 @@
 import os
 import pickle
-import random
 import numpy as np
+import matplotlib.pyplot as plt
 from collections import defaultdict
 from keras.models import load_model
 from keras.utils import pad_sequences
-from keras.preprocessing.text import Tokenizer
 from nltk.translate.bleu_score import corpus_bleu
-from keras.utils import to_categorical, plot_model, pad_sequences
-
-
-# load doc into memory
-def load_doc(filename):
-    if os.path.isfile(filename):
-        try:
-            with open(filename, 'rb', encoding='utf-8') as file:
-                return file.read()
-        except IOError as e:
-            print(f"Error Occured: {e}")
-    else:
-        print(f"{filename} not found.")
 
 
 # load a pre-defined list of photo identifiers
@@ -154,6 +140,30 @@ def generate_desc(model, tokenizer, photo, max_length):
     return final_text
 
 
+# def image_caption_plot(key, actual, predicted):
+#     # Create a grid of subplots with 1 row and 3 columns
+#     fig, axs = plt.subplots(1, 3, figsize=(10, 5))
+
+#     image_files = []
+
+#     # Loop through each subplot and add an image and two captions
+#     for i in range(len(image_files)):
+#         # Load the image and display it on the subplot
+#         image = plt.imread(image_files[i])
+#         axs[i].imshow(image)
+#         axs[i].axis("off")
+
+#         # Add the two captions as text to the subplot
+#         axs[i].text(
+#             0.5, 0.95, f"{captions1[i]}\n{captions2[i]}",
+#             horizontalalignment="center", verticalalignment="top",
+#             transform=axs[i].transAxes, fontsize=10
+#         )
+
+#     # Save the plot to a file
+#     fig.savefig("images.png", bbox_inches="tight")
+
+
 def calculate_bleu_scores(model, descriptions, photos, tokenizer, max_length):
     """
     Calculates BLEU scores for the model's generated descriptions.
@@ -165,8 +175,12 @@ def calculate_bleu_scores(model, descriptions, photos, tokenizer, max_length):
         # yhat = generate_desc(model, tokenizer, desc_list, photos[key][0], max_length)
         print(key)
         yhat = generate_desc(model, tokenizer, photos[key], max_length)
+
+        # image_caption_plot(key, [d for d in desc_list], yhat)
+
         actual.append([d.split() for d in desc_list])
         predicted.append(yhat.split())
+
         print(f"actual: {actual} \n\npredicted: {predicted} \n\nEND")
     #     bleu_scores = {f"BLEU-{i+1}": corpus_bleu(actual, predicted, weights=w)
     #                    for i, w in enumerate(bleu_weights)}
