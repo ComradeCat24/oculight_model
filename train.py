@@ -15,18 +15,6 @@ from keras.regularizers import l2
 warnings.filterwarnings('ignore')
 
 
-# load doc into memory
-def load_doc(filename):
-    if os.path.isfile(filename):
-        try:
-            with open(filename, 'rb', encoding='utf-8') as file:
-                return file.read()
-        except IOError as e:
-            print(f"Error Occured: {e}")
-    else:
-        print(f"{filename} not found.")
-
-
 # load a pre-defined list of photo identifiers
 def load_set(filename):
     with open(filename, 'r', encoding='utf-8') as file:
