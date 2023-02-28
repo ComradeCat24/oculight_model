@@ -1,4 +1,5 @@
 import os
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 import random
 import numpy as np
 import pickle
@@ -9,10 +10,7 @@ from keras.utils import to_categorical, plot_model, pad_sequences
 from keras.models import Model
 from keras.layers import Input, Dense, LSTM, Embedding, Dropout, Add, TimeDistributed, GlobalMaxPooling1D, Concatenate, BatchNormalization
 from keras.callbacks import ModelCheckpoint, EarlyStopping
-import warnings
 from keras.regularizers import l2
-
-warnings.filterwarnings('ignore')
 
 
 # load a pre-defined list of photo identifiers
