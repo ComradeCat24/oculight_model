@@ -1,5 +1,7 @@
 import os
+# fmt: off
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
+# fmt: on
 import sys
 import pickle
 import numpy as np
