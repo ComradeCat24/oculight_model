@@ -1,12 +1,16 @@
+# fmt: off
+import random
 import os
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 import pickle
 import numpy as np
+from textwrap3 import wrap
 import matplotlib.pyplot as plt
 from collections import defaultdict
 from keras.models import load_model
 from keras.utils import pad_sequences
 from nltk.translate.bleu_score import corpus_bleu
+# fmt: on
 
 
 # load a pre-defined list of photo identifiers
@@ -30,8 +34,8 @@ def load_clean_descriptions(filename, dataset=None):
 
     for line in doc:
         # split line by white space
-        image_id, image_desc_id, image_desc = line.split(" ")[0].split(".")[0], line.split(" ")[
-            1], " ".join(line.split(" ")[2:])
+        image_id, image_desc = line.split(" ")[0].split(
+            ".")[0], " ".join(line.split(" ")[2:])
 
         # if dataset is not empty or if the image is in the dataset, store the description
         if not dataset or image_id in dataset:
@@ -141,28 +145,36 @@ def generate_desc(model, tokenizer, photo, max_length):
     return final_text
 
 
-# def image_caption_plot(key, actual, predicted):
-#     # Create a grid of subplots with 1 row and 3 columns
-#     fig, axs = plt.subplots(1, 3, figsize=(10, 5))
+def image_caption_plot(actual, predicted, bleu_score=0.0):
 
-#     image_files = []
+    # Randomly select 4 key-value pairs
+    keys = list(actual.keys())
+    random.shuffle(keys)
+    keys = keys[:4]
 
-#     # Loop through each subplot and add an image and two captions
-#     for i in range(len(image_files)):
-#         # Load the image and display it on the subplot
-#         image = plt.imread(image_files[i])
-#         axs[i].imshow(image)
-#         axs[i].axis("off")
+    image_files = [f"subset_dataset/selected_images/{v}.jpg" for v in keys]
 
-#         # Add the two captions as text to the subplot
-#         axs[i].text(
-#             0.5, 0.95, f"{captions1[i]}\n{captions2[i]}",
-#             horizontalalignment="center", verticalalignment="top",
-#             transform=axs[i].transAxes, fontsize=10
-#         )
+    # Create a grid of subplots with 1 row and 3 columns
+    fig, axs = plt.subplots(len(keys), 1, figsize=(20, 20))
+    fig.subplots_adjust(hspace=0.2)
 
-#     # Save the plot to a file
-#     fig.savefig("images.png", bbox_inches="tight")
+    # Loop through each subplot and add an image and two captions
+    for k, img in enumerate(image_files):
+        # Load the image and display it on the subplot
+        image = plt.imread(img)
+        axs[k].imshow(image)
+
+        id = img.split("/")[-1].split(".")[0]
+
+        # Add the actual captions to the subplot on the right
+        caption = "\n".join(actual[id])
+        pred_caption = predicted[id]
+
+        axs[k].text(1.05, 0, f"Actual caption:\n{caption}\n\nPredicted caption: {pred_caption}\n\nBLEU score: {bleu_score:.2f}",
+                    transform=axs[k].transAxes, fontsize=14)
+
+    # Save the plot to a file
+    fig.savefig("evaluate.png", bbox_inches="tight")
 
 
 def calculate_bleu_scores(model, descriptions, photos, tokenizer, max_length):
@@ -171,18 +183,17 @@ def calculate_bleu_scores(model, descriptions, photos, tokenizer, max_length):
     """
     bleu_weights = [(1.0, 0, 0, 0), (0.5, 0.5, 0, 0),
                     (0.3, 0.3, 0.3, 0), (0.25, 0.25, 0.25, 0.25)]
+    actual, predicted = defaultdict(), defaultdict()
     for i, (key, desc_list) in enumerate(descriptions.items()):
-        actual, predicted = [], []
-        # yhat = generate_desc(model, tokenizer, desc_list, photos[key][0], max_length)
-        print(key)
         yhat = generate_desc(model, tokenizer, photos[key], max_length)
+        actual[key] = desc_list
+        predicted[key] = yhat
 
-        # image_caption_plot(key, [d for d in desc_list], yhat)
+        # actual[key] = ([d.split() for d in desc_list])
+        # predicted[key] = (yhat.split())
 
-        actual.append([d.split() for d in desc_list])
-        predicted.append(yhat.split())
-
-        print(f"actual: {actual} \n\npredicted: {predicted} \n\nEND")
+    # print(f"actual: {actual}\n\npredicted: {predicted}\n")
+    image_caption_plot(actual, predicted)
     #     bleu_scores = {f"BLEU-{i+1}": corpus_bleu(actual, predicted, weights=w)
     #                    for i, w in enumerate(bleu_weights)}
     #     print(bleu_scores)
@@ -213,7 +224,7 @@ print('Description Length: %d' % max_length)
 
 # photo features
 test_features = load_photo_features('features.pkl', test)
-print('Photos: train=%d' % len(test_features))
+print('Photos: test=%d' % len(test_features))
 
 
 # load the model
