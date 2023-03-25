@@ -120,41 +120,43 @@ def create_sequences(tokenizer, max_length, desc_list, photo, vocab_size):
 
 
 # define the captioning model
-def define_model(feature_shape, vocab_size, max_length):
+def define_model(image_shape, vocab_size, max_caption_length):
 
-    input_image = Input(shape=(feature_shape))
-    droplayer1 = Dropout(0.5)(input_image)
-    bn = BatchNormalization()(droplayer1)
-    fimage1 = Dense(256, activation='relu', name="ImageFeature1",
-                    kernel_regularizer=l2(0.01))(bn)
-    droplayer1 = Dropout(0.5)(fimage1)
-    bn = BatchNormalization()(droplayer1)
-    fimage1 = Dense(256, activation='relu', name="ImageFeature3",
-                    kernel_regularizer=l2(0.01))(bn)
-    droplayer2 = Dropout(0.5)(fimage1)
-    bn = BatchNormalization()(droplayer2)
-    fimage2 = Dense(256, activation='relu')(bn)
+    # Image model
+    input_image = Input(shape=image_shape, name="image_input")
+    dropout_layer = Dropout(0.5)(input_image)
+    bn_layer = BatchNormalization()(dropout_layer)
+    dense_layer1 = Dense(256, activation='relu',
+                         kernel_regularizer=l2(0.01))(bn_layer)
+    dropout_layer = Dropout(0.5)(dense_layer1)
+    bn_layer = BatchNormalization()(dropout_layer)
+    dense_layer2 = Dense(256, activation='relu',
+                         kernel_regularizer=l2(0.01))(bn_layer)
+    dropout_layer = Dropout(0.5)(dense_layer2)
+    bn_layer = BatchNormalization()(dropout_layer)
+    image_features = Dense(256, activation='relu',
+                           name="image_features")(bn_layer)
 
-    # sequence model
-    input_txt = Input(shape=(max_length))
-    ftxt = Embedding(vocab_size, 64, mask_zero=True)(input_txt)
-    droplayer_ = Dropout(0.5)(ftxt)
-    bn = BatchNormalization()(droplayer_)
-    ftxt = LSTM(256, name="CaptionFeature")(bn)
+    # Caption model
+    input_caption = Input(shape=(max_caption_length,), name="caption_input")
+    embedding_layer = Embedding(vocab_size, 64, mask_zero=True)(input_caption)
+    dropout_layer = Dropout(0.5)(embedding_layer)
+    bn_layer = BatchNormalization()(dropout_layer)
+    caption_features = LSTM(256, name="caption_features")(bn_layer)
 
-    # combined model for decoder
-    decoder = Add()([ftxt, fimage2])
-    decoder = Dense(256, activation='relu')(decoder)
-    droplayer1 = Dropout(0.5)(decoder)
-    bn = BatchNormalization()(droplayer1)
-    output = Dense(vocab_size, activation='softmax')(bn)
+    # Combined model
+    decoder = Add()([image_features, caption_features])
+    dense_layer1 = Dense(256, activation='relu')(decoder)
+    dropout_layer = Dropout(0.5)(dense_layer1)
+    bn_layer = BatchNormalization()(dropout_layer)
+    output = Dense(vocab_size, activation='softmax', name="output")(bn_layer)
 
-    model = Model(inputs=[input_image, input_txt], outputs=output)
-
+    # Create and compile the model
+    model = Model(inputs=[input_image, input_caption], outputs=output)
     model.compile(loss='categorical_crossentropy',
                   optimizer='adam', metrics=['accuracy'])
 
-    # summarize model
+    # Summarize the model
     model.summary()
     # plot_model(model, to_file='model.png', show_shapes=True)
 
@@ -234,7 +236,7 @@ callbacks_list = [
     # for accuracy
     EarlyStopping(monitor='accuracy', mode='max', patience=3),
     ModelCheckpoint(filepath='model_checkpoints/weights.{epoch:02d}-{accuracy:.2f}.hdf5',
-                    save_best_only=True, monitor='accuracy', mode='max'),
+                    save_best_only=True, save_weights_only=True, monitor='accuracy', mode='max'),
 ]
 
 
@@ -249,6 +251,8 @@ if checkpoint_files:
     # Load the last checkpoint file in the sorted list (which has the highest epoch number)
     latest_checkpoint_file = checkpoint_files[-1]
 
+    print("Found checkpoint file:", latest_checkpoint_file)
+
     # Extract the epoch number from the third-to-last part of the file name
     initial_epoch = int(latest_checkpoint_file.split('.')[-3].split('-')[0])
 
@@ -257,6 +261,9 @@ if checkpoint_files:
     # Delete all checkpoint files except for the latest one
     for checkpoint_file in checkpoint_files[:-1]:
         os.remove(checkpoint_file)
+
+    # Print a message indicating that the training is resuming from a specific epoch
+    print("Resuming training from epoch:", initial_epoch + 1)
 else:
     # No checkpoint files found
     print("No checkpoint files found in 'model_checkpoints' directory.")
@@ -274,6 +281,8 @@ model.fit(
     # max_queue_size=max_queue_size, # specify the maximum size of the generator queue
     callbacks=callbacks_list,
 )
+
+model.save('captioning_model.h5')
 
 # Get the training loss and accuracy
 train_loss = model.history.history['loss']
