@@ -228,7 +228,7 @@ print('Photos: test=%d' % len(test_features))
 
 
 # load the model
-filename = 'model_checkpoints/new_model.h5'
+filename = 'captioning_model.h5'
 model = load_model(filename)
 # evaluate model
 calculate_bleu_scores(model, test_descriptions,
