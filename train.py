@@ -1,5 +1,7 @@
+# fmt: off
 import os
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
+import glob
 import random
 import numpy as np
 import pickle
@@ -9,8 +11,9 @@ from keras.preprocessing.text import Tokenizer
 from keras.utils import to_categorical, plot_model, pad_sequences
 from keras.models import Model
 from keras.layers import Input, Dense, LSTM, Embedding, Dropout, Add, TimeDistributed, GlobalMaxPooling1D, Concatenate, BatchNormalization
-from keras.callbacks import ModelCheckpoint, EarlyStopping
+from keras.callbacks import ModelCheckpoint, EarlyStopping, LambdaCallback
 from keras.regularizers import l2
+# fmt: on
 
 
 # load a pre-defined list of photo identifiers
@@ -167,7 +170,6 @@ def data_generator(descriptions, photos, tokenizer, max_length, vocab_size, n_it
             break
         random.shuffle(keys)
         for key in keys:
-            print(key)
             try:
                 # retrieve the photo feature
                 photo = photos[key]
@@ -214,38 +216,64 @@ print('Photos: shape=%d' % feature_shape)
 model = define_model(feature_shape, vocab_size, max_length)
 
 # train the model, run epochs manually and save after each epoch
-epochs = 20
+epochs = 100
+initial_epoch = 0
 steps_per_epoch = len(train_descriptions)
 
 # create the data generator
 train_generator = data_generator(
     train_descriptions, train_features, tokenizer, max_length, vocab_size)
 
+
 # create callbacks list
 callbacks_list = [
     # for loss
     # EarlyStopping(monitor='loss', mode='min', patience=3),
-    # ModelCheckpoint(filepath='model_checkpoints/model_{epoch:02d}.h5', save_best_only=True, monitor='loss', mode='min')
+    # ModelCheckpoint(filepath='model_checkpoints/weights.{epoch:02d}-{loss:.2f}.hdf5', save_best_only=True, monitor='loss', mode='min')
 
     # for accuracy
     EarlyStopping(monitor='accuracy', mode='max', patience=3),
-    ModelCheckpoint(filepath='model_checkpoints/model.h5',
-                    save_best_only=True, monitor='accuracy', mode='max')
+    ModelCheckpoint(filepath='model_checkpoints/weights.{epoch:02d}-{accuracy:.2f}.hdf5',
+                    save_best_only=True, monitor='accuracy', mode='max'),
 ]
+
+
+# Get a list of all the checkpoint files in the directory
+checkpoint_files = glob.glob('model_checkpoints/*.hdf5')
+
+if checkpoint_files:
+    # Sort the checkpoint files by epoch number
+    checkpoint_files = sorted(
+        checkpoint_files, key=lambda x: int(x.split('.')[-2]))
+
+    # Load the last checkpoint file in the sorted list (which has the highest epoch number)
+    latest_checkpoint_file = checkpoint_files[-1]
+
+    # Extract the epoch number from the third-to-last part of the file name
+    initial_epoch = int(latest_checkpoint_file.split('.')[-3].split('-')[0])
+
+    model.load_weights(latest_checkpoint_file)
+
+    # Delete all checkpoint files except for the latest one
+    for checkpoint_file in checkpoint_files[:-1]:
+        os.remove(checkpoint_file)
+else:
+    # No checkpoint files found
+    print("No checkpoint files found in 'model_checkpoints' directory.")
+
 
 # fit the model
 model.fit(
     x=train_generator,
     steps_per_epoch=steps_per_epoch,
     epochs=epochs,
+    initial_epoch=initial_epoch,
     verbose=1,
     # use_multiprocessing=True,
     # workers=num_workers, # specify the number of worker processes to use
     # max_queue_size=max_queue_size, # specify the maximum size of the generator queue
     callbacks=callbacks_list,
 )
-
-print(model.history.history.keys())
 
 # Get the training loss and accuracy
 train_loss = model.history.history['loss']
