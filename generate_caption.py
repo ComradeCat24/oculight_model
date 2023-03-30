@@ -1,16 +1,17 @@
-import os
 # fmt: off
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
-# fmt: on
+import os
 import sys
 import pickle
 import numpy as np
+from dotenv import load_dotenv
+load_dotenv()
 from collections import defaultdict
 from keras.models import Model, load_model
 from keras.preprocessing.image import ImageDataGenerator
 # from keras.applications.mobilenet_v2 import MobileNetV2, preprocess_input
 from keras.applications.vgg16 import VGG16, preprocess_input
 from keras.utils import pad_sequences, load_img, img_to_array
+# fmt: on
 
 
 # load clean descriptions into memory
@@ -135,14 +136,16 @@ def generate_desc(model, tokenizer, photo, max_length):
 
 
 # load tokenizer
-tokenizer = load_tokenizer('tokenizer.pkl')
+tokenized_file = os.environ.get('TOKENIZED_DATA_FILE')
+tokenizer = load_tokenizer(tokenized_file)
 
 # determine the maximum sequence length
-max_length = max_length(load_clean_descriptions('descriptions.txt'))
+descriptions_file = os.environ.get('CLEANED_DESCRIPTIONS_FILE')
+max_length = max_length(load_clean_descriptions(descriptions_file))
 
 # load the model
-model_filename = 'model_checkpoints/new_model.h5'
-model = load_model(model_filename)
+model_name = os.environ.get('MODEL_NAME')
+model = load_model(model_name)
 
 # Loop through all command line arguments
 for i in range(1, len(sys.argv)):
@@ -152,4 +155,5 @@ for i in range(1, len(sys.argv)):
 
     # generate description
     desc = generate_desc(model, tokenizer, photo_feature, max_length)
+    # print(f'{image_filename}: {desc}')
     print(desc)
