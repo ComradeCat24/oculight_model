@@ -9,9 +9,11 @@ dataset/*
 # output files 
 /subset_dataset/*
 !/subset_dataset/dataset_subsetting.py
+image_features.pkl
+cleaned_descriptions.txt
+image_caption_tokenizers.pkl
 splits/*
 model_checkpoints/*
-image_features.pkl
-tokenizer.pkl
 captioning_model.h5
-cleaned_descriptions.txt
+
+
