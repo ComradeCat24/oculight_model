@@ -1,10 +1,10 @@
 # fmt: off
 import random
 import os
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 import pickle
 import numpy as np
-from textwrap3 import wrap
+from dotenv import load_dotenv
+load_dotenv()
 import matplotlib.pyplot as plt
 from collections import defaultdict
 from keras.models import load_model
@@ -152,7 +152,8 @@ def image_caption_plot(actual, predicted, bleu_score=0.0):
     random.shuffle(keys)
     keys = keys[:4]
 
-    image_files = [f"subset_dataset/selected_images/{v}.jpg" for v in keys]
+    images_dir = os.environ.get('IMAGE_DIRECTORY_PATH')
+    image_files = [f"{images_dir}/{v}.jpg" for v in keys]
 
     # Create a grid of subplots with 1 row and 3 columns
     fig, axs = plt.subplots(len(keys), 1, figsize=(20, 20))
@@ -204,32 +205,36 @@ def calculate_bleu_scores(model, descriptions, photos, tokenizer, max_length):
 # test dataset
 
 # load training dataset
-test_filename = 'subset_dataset/splits/subset_captions.test.txt'
+
+test_filename = os.environ.get('TESTING_SET')
 
 test = load_set(test_filename)
 print('Dataset: %d' % len(test))
 
 # descriptions
-test_descriptions = load_clean_descriptions('descriptions.txt', test)
+descriptions_file = os.environ.get('CLEANED_DESCRIPTIONS_FILE')
+test_descriptions = load_clean_descriptions(descriptions_file, test)
 print('Descriptions: test=%d' % len(test_descriptions))
 
 # prepare tokenizer
-tokenizer = load_tokenizer('tokenizer.pkl')
+tokenized_file = os.environ.get('TOKENIZED_DATA_FILE')
+tokenizer = load_tokenizer(tokenized_file)
 vocab_size = len(tokenizer.word_index) + 1
 print('Vocabulary Size: %d' % vocab_size)
 
 # determine the maximum sequence length
-max_length = max_length(load_clean_descriptions('descriptions.txt'))
+max_length = max_length(load_clean_descriptions(descriptions_file))
 print('Description Length: %d' % max_length)
 
 # photo features
-test_features = load_photo_features('features.pkl', test)
+pickle_file = os.environ.get('FEATURE_PICKLE_FILE')
+test_features = load_photo_features(pickle_file, test)
 print('Photos: test=%d' % len(test_features))
 
-
 # load the model
-filename = 'captioning_model.h5'
-model = load_model(filename)
+model_name = os.environ.get('MODEL_NAME')
+model = load_model(model_name)
+
 # evaluate model
 calculate_bleu_scores(model, test_descriptions,
                       test_features, tokenizer, max_length)
