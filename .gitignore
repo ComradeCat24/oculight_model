@@ -1,5 +1,10 @@
+archive.zip
 /venv/
 dataset/*
 /subset_dataset/*
 !/subset_dataset/dataset_subsetting.py
-archive.zip
+
+# output files 
+image_features.pkl
+tokenizer.pkl
+descriptions.txt
