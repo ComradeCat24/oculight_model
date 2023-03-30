@@ -8,7 +8,7 @@ cwd = os.path.abspath(os.getcwd())
 parent_dir = os.path.abspath(os.path.join(cwd, os.pardir))
 
 # Set the path to the captions file and the directory where the images are located
-images_dir = f"{parent_dir}/dataset/flickr30k_images"
+images_dir = f"{parent_dir}/dataset/images"
 captions_path = f"{parent_dir}/dataset/captions.txt"
 
 # Set the number of captions you want to select
@@ -29,8 +29,9 @@ random.shuffle(image_names)
 
 # Create a new directory to store the selected images and captions
 subset_dir = f"{parent_dir}/subset_dataset"
-selected_images_dir = os.path.join(subset_dir, "selected_images")
-subset_captions_path = os.path.join(subset_dir, "subset_captions.txt")
+selected_images_dir = os.path.join(subset_dir, "images")
+subset_captions_path = os.path.join(subset_dir, "captions.txt")
+
 if not os.path.exists(selected_images_dir):
     os.makedirs(selected_images_dir)
 
