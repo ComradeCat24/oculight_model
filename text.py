@@ -1,7 +1,12 @@
+# fmt: off
+import os
 import string
 import pickle
+from dotenv import load_dotenv
+load_dotenv()
 from collections import defaultdict
 from keras.preprocessing.text import Tokenizer
+# fmt: on
 
 
 def load_doc(filename):
@@ -56,6 +61,7 @@ def clean_descriptions(descriptions):
             desc = [word for word in desc if len(word) > 1]
             desc = [word for word in desc if word.isalpha()]
             desc_list[i] = (desc_id, ' '.join(desc))
+    return descriptions
 
 
 def to_vocabulary(descriptions):
@@ -113,30 +119,33 @@ def load_clean_descriptions(filename):
     return descriptions
 
 
-def create_tokenizer(descriptions, num_words=None):
+def create_tokenizer(descriptions, filename, num_words=None):
     lines = to_lines(descriptions)
     tokenizer = Tokenizer(
         num_words=num_words, filters='!"#$%&()*+,-./:;<=>?@[\]^_`{|}~', lower=True)
     tokenizer.fit_on_texts(lines)
 
     # save the tokenizer to a file
-    with open('tokenizer.pkl', 'wb') as handle:
+    with open(filename, 'wb') as handle:
         pickle.dump(tokenizer, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
     return tokenizer
 
 
-filename = 'subset_dataset/subset_captions.txt'
-doc = load_doc(filename)
+caption_directory = os.environ.get('CAPTION_DIRECTORY_PATH')
+doc = load_doc(caption_directory)
 descriptions = load_descriptions(doc)
-# print(descriptions)
-print(len(descriptions))
-clean_descriptions(descriptions)
+descriptions = clean_descriptions(descriptions)
+
+print(f'Descriptions: {len(descriptions)}')
 vocabulary = to_vocabulary(descriptions)
-# print(vocabulary)
-print(len(vocabulary))
-save_descriptions(descriptions, 'descriptions.txt')
+print(f'Vocabulary Size: {len(vocabulary)}')
+
+clean_descriptions_file = os.environ.get('CLEANED_DESCRIPTIONS_FILE')
+save_descriptions(descriptions, clean_descriptions_file)
+
+load_desc = load_clean_descriptions(clean_descriptions_file)
 
 # prepare tokenizer
-clean_descriptions = load_clean_descriptions('descriptions.txt')
-create_tokenizer(clean_descriptions)
+tokenized_file = os.environ.get('TOKENIZED_DATA_FILE')
+create_tokenizer(load_desc, tokenized_file)
