@@ -5,6 +5,8 @@ dataset/*
 !/subset_dataset/dataset_subsetting.py
 
 # output files 
+model_checkpoints/*
 image_features.pkl
 tokenizer.pkl
 descriptions.txt
+captioning_model.h5
