@@ -1,10 +1,11 @@
 # fmt: off
 import os
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 import glob
 import random
-import numpy as np
 import pickle
+import numpy as np
+from dotenv import load_dotenv
+load_dotenv()
 import matplotlib.pyplot as plt
 from collections import defaultdict
 from keras.preprocessing.text import Tokenizer
@@ -186,26 +187,30 @@ def data_generator(descriptions, photos, tokenizer, max_length, vocab_size, n_it
 # train dataset
 
 # load training dataset
-train_filename = 'subset_dataset/splits/subset_captions.train.txt'
+
+train_filename = os.environ.get('TRANING_SET')
 
 train = load_set(train_filename)
 print('Dataset: %d' % len(train))
 
 # descriptions
-train_descriptions = load_clean_descriptions('descriptions.txt', train)
+descriptions_file = os.environ.get('CLEANED_DESCRIPTIONS_FILE')
+train_descriptions = load_clean_descriptions(descriptions_file, train)
 print('Descriptions: train=%d' % len(train_descriptions))
 
 # prepare tokenizer
-tokenizer = load_tokenizer('tokenizer.pkl')
+tokenized_file = os.environ.get('TOKENIZED_DATA_FILE')
+tokenizer = load_tokenizer(tokenized_file)
 vocab_size = len(tokenizer.word_index) + 1
 print('Vocabulary Size: %d' % vocab_size)
 
 # determine the maximum sequence length
-max_length = max_length(load_clean_descriptions('descriptions.txt'))
+max_length = max_length(load_clean_descriptions(descriptions_file))
 print('Description Length: %d' % max_length)
 
 # photo features
-train_features = load_photo_features('features.pkl', train)
+pickle_file = os.environ.get('FEATURE_PICKLE_FILE')
+train_features = load_photo_features(pickle_file, train)
 print('Photos: train=%d' % len(train_features))
 # Get the key-value pair for the first item in the dictionary
 _, image_feature = next(iter(train_features.items()))
@@ -218,7 +223,7 @@ print('Photos: shape=%d' % feature_shape)
 model = define_model(feature_shape, vocab_size, max_length)
 
 # train the model, run epochs manually and save after each epoch
-epochs = 100
+epochs = int(os.environ.get('TRAINING_EPOCHS'))
 initial_epoch = 0
 steps_per_epoch = len(train_descriptions)
 
@@ -226,22 +231,20 @@ steps_per_epoch = len(train_descriptions)
 train_generator = data_generator(
     train_descriptions, train_features, tokenizer, max_length, vocab_size)
 
+model_checkpoints_dir = os.environ.get('MODEL_CHECKPOINTS_PATH')
+os.makedirs(model_checkpoints_dir, exist_ok=True)
 
 # create callbacks list
 callbacks_list = [
-    # for loss
-    # EarlyStopping(monitor='loss', mode='min', patience=3),
-    # ModelCheckpoint(filepath='model_checkpoints/weights.{epoch:02d}-{loss:.2f}.hdf5', save_best_only=True, monitor='loss', mode='min')
-
     # for accuracy
     EarlyStopping(monitor='accuracy', mode='max', patience=3),
-    ModelCheckpoint(filepath='model_checkpoints/weights.{epoch:02d}-{accuracy:.2f}.hdf5',
-                    save_best_only=True, save_weights_only=True, monitor='accuracy', mode='max'),
+    ModelCheckpoint(filepath=os.path.join(model_checkpoints_dir,
+                    'weights.{epoch:02d}-{accuracy:.2f}.hdf5'), save_best_only=True, save_weights_only=True, monitor='accuracy', mode='max'),
 ]
 
 
 # Get a list of all the checkpoint files in the directory
-checkpoint_files = glob.glob('model_checkpoints/*.hdf5')
+checkpoint_files = glob.glob(f'{model_checkpoints_dir}/*.hdf5')
 
 if checkpoint_files:
     # Sort the checkpoint files by epoch number
@@ -282,7 +285,8 @@ model.fit(
     callbacks=callbacks_list,
 )
 
-model.save('captioning_model.h5')
+model_name = os.environ.get('MODEL_NAME')
+model.save(model_name)
 
 # Get the training loss and accuracy
 train_loss = model.history.history['loss']
@@ -313,4 +317,5 @@ ax2.set_ylabel('Accuracy')
 ax2.legend()
 
 plt.tight_layout()
-plt.savefig('training_plots.png')
+training_plot = os.environ.get('TRAINING_PLOT')
+plt.savefig(training_plot)
