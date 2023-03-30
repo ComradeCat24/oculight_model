@@ -1,12 +1,17 @@
+# Dataset
 archive.zip
-/venv/
 dataset/*
-/subset_dataset/*
-!/subset_dataset/dataset_subsetting.py
+
+# Python env
+/venv/
+/oculight_env/
 
 # output files 
+/subset_dataset/*
+!/subset_dataset/dataset_subsetting.py
+splits/*
 model_checkpoints/*
 image_features.pkl
 tokenizer.pkl
-descriptions.txt
 captioning_model.h5
+cleaned_descriptions.txt
