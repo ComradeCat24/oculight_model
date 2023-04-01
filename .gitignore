@@ -1,4 +1,16 @@
-/venv/
-dataset/Images/*
-dataset/captions.txt
+# Dataset
 archive.zip
+dataset/*
+
+# Python env
+/venv/
+/oculight_env/
+
+# output files 
+/subset_data/*
+image_features.pkl
+preprocessed_captions.txt
+caption_tokenizers.pkl
+dataset_splits/*
+model_checkpoints/*
+captioning_model.h5
