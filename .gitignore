@@ -14,7 +14,3 @@ caption_tokenizers.pkl
 dataset_splits/*
 model_checkpoints/*
 captioning_model.h5
-training_loss_accuracy_plot.png
-evaluation_plot.png
-
-
