@@ -136,7 +136,7 @@ def generate_desc(model, tokenizer, photo, max_length):
 
 
 # load tokenizer
-tokenized_file = os.environ.get('TOKENIZED_DATA_FILE')
+tokenized_file = os.environ.get('CAPTION_TOKENIZERS_FILE')
 tokenizer = load_tokenizer(tokenized_file)
 
 # determine the maximum sequence length
@@ -144,8 +144,8 @@ descriptions_file = os.environ.get('CLEANED_DESCRIPTIONS_FILE')
 max_length = max_length(load_clean_descriptions(descriptions_file))
 
 # load the model
-model_name = os.environ.get('MODEL_NAME')
-model = load_model(model_name)
+model_file = os.environ.get('SAVED_MODEL_FILE')
+model = load_model(model_file)
 
 # Loop through all command line arguments
 for i in range(1, len(sys.argv)):

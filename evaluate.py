@@ -175,7 +175,9 @@ def image_caption_plot(actual, predicted, bleu_score=0.0):
                     transform=axs[k].transAxes, fontsize=14)
 
     # Save the plot to a file
-    fig.savefig("evaluate.png", bbox_inches="tight")
+
+    evaluation_plot = os.environ.get('EVALUATION_PLOT_FILE')
+    fig.savefig(evaluation_plot, bbox_inches="tight")
 
 
 def calculate_bleu_scores(model, descriptions, photos, tokenizer, max_length):
@@ -217,7 +219,7 @@ test_descriptions = load_clean_descriptions(descriptions_file, test)
 print('Descriptions: test=%d' % len(test_descriptions))
 
 # prepare tokenizer
-tokenized_file = os.environ.get('TOKENIZED_DATA_FILE')
+tokenized_file = os.environ.get('CAPTION_TOKENIZERS_FILE')
 tokenizer = load_tokenizer(tokenized_file)
 vocab_size = len(tokenizer.word_index) + 1
 print('Vocabulary Size: %d' % vocab_size)
@@ -227,13 +229,13 @@ max_length = max_length(load_clean_descriptions(descriptions_file))
 print('Description Length: %d' % max_length)
 
 # photo features
-pickle_file = os.environ.get('FEATURE_PICKLE_FILE')
+pickle_file = os.environ.get('IMAGE_FEATURES_FILE')
 test_features = load_photo_features(pickle_file, test)
 print('Photos: test=%d' % len(test_features))
 
 # load the model
-model_name = os.environ.get('MODEL_NAME')
-model = load_model(model_name)
+model_file = os.environ.get('SAVED_MODEL_FILE')
+model = load_model(model_file)
 
 # evaluate model
 calculate_bleu_scores(model, test_descriptions,

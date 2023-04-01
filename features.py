@@ -48,5 +48,5 @@ features = extract_features(directory)
 print(f'Features: ${features}')
 print('Extracted Features: %d' % len(features))
 
-pickle_file = os.environ.get('FEATURE_PICKLE_FILE')
+pickle_file = os.environ.get('IMAGE_FEATURES_FILE')
 dump(features, open(pickle_file, 'wb'))

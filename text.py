@@ -132,8 +132,8 @@ def create_tokenizer(descriptions, filename, num_words=None):
     return tokenizer
 
 
-caption_directory = os.environ.get('CAPTION_DIRECTORY_PATH')
-doc = load_doc(caption_directory)
+caption_dir = os.environ.get('CAPTIONS_FILE_PATH')
+doc = load_doc(caption_dir)
 descriptions = load_descriptions(doc)
 descriptions = clean_descriptions(descriptions)
 
@@ -147,5 +147,5 @@ save_descriptions(descriptions, clean_descriptions_file)
 load_desc = load_clean_descriptions(clean_descriptions_file)
 
 # prepare tokenizer
-tokenized_file = os.environ.get('TOKENIZED_DATA_FILE')
+tokenized_file = os.environ.get('CAPTION_TOKENIZERS_FILE')
 create_tokenizer(load_desc, tokenized_file)

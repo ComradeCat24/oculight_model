@@ -199,7 +199,7 @@ train_descriptions = load_clean_descriptions(descriptions_file, train)
 print('Descriptions: train=%d' % len(train_descriptions))
 
 # prepare tokenizer
-tokenized_file = os.environ.get('TOKENIZED_DATA_FILE')
+tokenized_file = os.environ.get('CAPTION_TOKENIZERS_FILE')
 tokenizer = load_tokenizer(tokenized_file)
 vocab_size = len(tokenizer.word_index) + 1
 print('Vocabulary Size: %d' % vocab_size)
@@ -209,7 +209,7 @@ max_length = max_length(load_clean_descriptions(descriptions_file))
 print('Description Length: %d' % max_length)
 
 # photo features
-pickle_file = os.environ.get('FEATURE_PICKLE_FILE')
+pickle_file = os.environ.get('IMAGE_FEATURES_FILE')
 train_features = load_photo_features(pickle_file, train)
 print('Photos: train=%d' % len(train_features))
 # Get the key-value pair for the first item in the dictionary
@@ -231,7 +231,7 @@ steps_per_epoch = len(train_descriptions)
 train_generator = data_generator(
     train_descriptions, train_features, tokenizer, max_length, vocab_size)
 
-model_checkpoints_dir = os.environ.get('MODEL_CHECKPOINTS_PATH')
+model_checkpoints_dir = os.environ.get('CHECKPOINT_DIR_PATH')
 os.makedirs(model_checkpoints_dir, exist_ok=True)
 
 # create callbacks list
@@ -285,8 +285,8 @@ model.fit(
     callbacks=callbacks_list,
 )
 
-model_name = os.environ.get('MODEL_NAME')
-model.save(model_name)
+model_file = os.environ.get('SAVED_MODEL_FILE')
+model.save(model_file)
 
 # Get the training loss and accuracy
 train_loss = model.history.history['loss']
@@ -317,5 +317,5 @@ ax2.set_ylabel('Accuracy')
 ax2.legend()
 
 plt.tight_layout()
-training_plot = os.environ.get('TRAINING_PLOT')
+training_plot = os.environ.get('TRAINING_PLOT_FILE')
 plt.savefig(training_plot)
