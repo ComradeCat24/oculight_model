@@ -233,12 +233,33 @@ train_generator = data_generator(
 model_checkpoints_dir = os.environ.get('CHECKPOINT_DIR_PATH')
 os.makedirs(model_checkpoints_dir, exist_ok=True)
 
+
+def delete_old_checkpoints(model_checkpoints_dir, keep=2):
+    # Get a list of all the checkpoint files in the directory
+    checkpoint_files = glob.glob(f'{model_checkpoints_dir}/*.hdf5')
+
+    if checkpoint_files:
+        # Sort the checkpoint files by epoch number
+        checkpoint_files = sorted(
+            checkpoint_files, key=lambda x: int(x.split('.')[-2]))
+
+        # Keep only the most recent 'keep' number of files
+        if len(checkpoint_files) > keep:
+            checkpoint_files_to_delete = checkpoint_files[:-keep]
+            for checkpoint_file in checkpoint_files_to_delete:
+                os.remove(checkpoint_file)
+
+
 # create callbacks list
 callbacks_list = [
     # for accuracy
     EarlyStopping(monitor='accuracy', mode='max', patience=3),
     ModelCheckpoint(filepath=os.path.join(model_checkpoints_dir,
                     'weights.{epoch:02d}-{accuracy:.2f}.hdf5'), save_best_only=True, save_weights_only=True, monitor='accuracy', mode='max'),
+    LambdaCallback(
+        on_epoch_end=lambda epoch, logs: delete_old_checkpoints(
+            model_checkpoints_dir, keep=2)
+    )
 ]
 
 

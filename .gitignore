@@ -7,13 +7,14 @@ dataset/*
 /oculight_env/
 
 # output files 
-/subset_dataset/*
-!/subset_dataset/dataset_subsetting.py
+/subset_data/*
 image_features.pkl
-cleaned_descriptions.txt
-image_caption_tokenizers.pkl
-splits/*
+preprocessed_captions.txt
+caption_tokenizers.pkl
+dataset_splits/*
 model_checkpoints/*
 captioning_model.h5
+training_loss_accuracy_plot.png
+evaluation_plot.png
 
 
