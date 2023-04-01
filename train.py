@@ -8,12 +8,11 @@ from dotenv import load_dotenv
 load_dotenv()
 import matplotlib.pyplot as plt
 from collections import defaultdict
-from keras.preprocessing.text import Tokenizer
+from keras.regularizers import l2
 from keras.utils import to_categorical, plot_model, pad_sequences
 from keras.models import Model
-from keras.layers import Input, Dense, LSTM, Embedding, Dropout, Add, TimeDistributed, GlobalMaxPooling1D, Concatenate, BatchNormalization
+from keras.layers import Input, Dense, LSTM, Embedding, Dropout, Add, BatchNormalization
 from keras.callbacks import ModelCheckpoint, EarlyStopping, LambdaCallback
-from keras.regularizers import l2
 # fmt: on
 
 
@@ -295,22 +294,24 @@ train_acc = model.history.history['accuracy']
 # Get the number of epochs
 epochs = range(1, len(train_loss) + 1)
 
-# Calculate the mean training loss and accuracy
-mean_loss = np.mean(train_loss)
-mean_acc = np.mean(train_acc)
+# Fit a polynomial regression line to the training loss and accuracy data
+loss_coeffs = np.polyfit(epochs, train_loss, 1)
+acc_coeffs = np.polyfit(epochs, train_acc, 1)
+loss_fit = np.poly1d(loss_coeffs)
+acc_fit = np.poly1d(acc_coeffs)
 
-# Plot training loss and accuracy
+# Plot training loss and accuracy with best-fitting lines
 fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(8, 8))
 
 ax1.plot(epochs, train_loss, 'bo', label='Training loss')
-ax1.axhline(mean_loss, color='r', label=f'Mean loss: {mean_loss:.2f}')
+ax1.plot(epochs, loss_fit(epochs), 'r-', label='Best fit line')
 ax1.set_title('Training loss')
 ax1.set_xlabel('Epochs')
 ax1.set_ylabel('Loss')
 ax1.legend()
 
 ax2.plot(epochs, train_acc, 'bo', label='Training accuracy')
-ax2.axhline(mean_acc, color='m', label=f'Mean accuracy: {mean_acc:.2f}')
+ax2.plot(epochs, acc_fit(epochs), 'r-', label='Best fit line')
 ax2.set_title('Training accuracy')
 ax2.set_xlabel('Epochs')
 ax2.set_ylabel('Accuracy')
