@@ -4,6 +4,7 @@ import numpy as np
 from pickle import dump
 from dotenv import load_dotenv
 load_dotenv()
+from tqdm import tqdm
 from keras.models import Model
 from collections import OrderedDict
 from keras.utils import load_img, img_to_array
@@ -25,7 +26,8 @@ def extract_features(directory):
     datagen = ImageDataGenerator(preprocessing_function=preprocess_input)
 
     def feature_generator(directory):
-        for name in os.listdir(directory):
+        print("START")
+        for name in tqdm(os.listdir(directory)):
             filename = directory + '/' + name
             image_id = name.split(".")[0]
             image = load_img(filename, target_size=(224, 224))
@@ -33,10 +35,9 @@ def extract_features(directory):
             image = image.reshape(
                 (1, image.shape[0], image.shape[1], image.shape[2]))
             feature = model.predict(datagen.flow(
-                image, batch_size=32)).flatten()
-            print(np.array(feature).shape)
+                image, batch_size=32), verbose=0).flatten()
 
-            print('>%s' % name)
+            # print('>%s' % name)
             yield image_id, feature
 
     features = OrderedDict(feature_generator(directory))
