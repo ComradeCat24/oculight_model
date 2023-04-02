@@ -26,7 +26,7 @@ def extract_features(directory):
     datagen = ImageDataGenerator(preprocessing_function=preprocess_input)
 
     def feature_generator(directory):
-        print("START")
+        print("\n[info] STARTING EXTRACTING FEATURES...")
         for name in tqdm(os.listdir(directory)):
             filename = directory + '/' + name
             image_id = name.split(".")[0]
@@ -51,3 +51,4 @@ print('Extracted Features: %d' % len(features))
 
 pickle_file = os.environ.get('IMAGE_FEATURES_FILE')
 dump(features, open(pickle_file, 'wb'))
+print("\n[info] IMAGE FEATURES FILE SAVED SUCCESSFULLY")

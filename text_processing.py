@@ -2,6 +2,7 @@
 import os
 import string
 import pickle
+from tqdm import tqdm
 from dotenv import load_dotenv
 load_dotenv()
 from collections import defaultdict
@@ -52,7 +53,8 @@ def clean_descriptions(descriptions):
     removing words that are not alphabetic or have a length less than 2.
     """
     table = str.maketrans('', '', string.punctuation)
-    for image_name, desc_list in descriptions.items():
+    print("\n[info] CLEANING DESCRIPTIONS FILE...")
+    for image_name, desc_list in tqdm(descriptions.items()):
         for i in range(len(desc_list)):
             desc_id, desc = desc_list[i][0], desc_list[i][1]
             desc = desc.split()
@@ -61,6 +63,7 @@ def clean_descriptions(descriptions):
             desc = [word for word in desc if len(word) > 1]
             desc = [word for word in desc if word.isalpha()]
             desc_list[i] = (desc_id, ' '.join(desc))
+
     return descriptions
 
 
@@ -80,13 +83,15 @@ def save_descriptions(descriptions, filename):
     Saves the descriptions to a text file in the format "image_name, comment_number, comment".
     """
     lines = list()
-    for img_id in descriptions.keys():
+    print("\n[info] SAVING DESCRIPTIONS FILE ")
+    for img_id in tqdm(descriptions.keys()):
         img_descs = descriptions[img_id]
         for desc in img_descs:
             lines.append(img_id + ', ' + desc[0] + ', ' + desc[1])
     data = '\n'.join(lines)
     with open(filename, 'w', encoding='utf-8') as file:
         file.write(data)
+    print("\n[info] CLEANED DESCRIPTIONS FILE SAVED SUCCESSFULLY")
 
 
 # covert a dictionary of clean descriptions to a list of descriptions
@@ -98,14 +103,15 @@ def to_lines(descriptions):
 
 
 # load clean descriptions into memory
-def load_clean_descriptions(filename):
+def prepare_descriptions_for_tokenizer(filename):
     # load document
     with open(filename, "r", encoding='utf-8') as file:
         doc = file.readlines()
 
     descriptions = defaultdict(list)
 
-    for line in doc:
+    print("\n[info] PREPARING DESCRIPTIONS FOR TOKENIZER...")
+    for line in tqdm(doc):
         # split line by white space
         image_id, image_desc_id, image_desc = line.split(" ")[0].split(".")[0], line.split(" ")[
             1], " ".join(line.split(" ")[2:])
@@ -129,7 +135,7 @@ def create_tokenizer(descriptions, filename, num_words=None):
     with open(filename, 'wb') as handle:
         pickle.dump(tokenizer, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
-    return tokenizer
+    print("\n[info] SAVED TOKENIZER FILE SUCCESSFULLY")
 
 
 caption_dir = os.environ.get('CAPTIONS_FILE_PATH')
@@ -144,7 +150,7 @@ print(f'Vocabulary Size: {len(vocabulary)}')
 clean_descriptions_file = os.environ.get('CLEANED_DESCRIPTIONS_FILE')
 save_descriptions(descriptions, clean_descriptions_file)
 
-load_desc = load_clean_descriptions(clean_descriptions_file)
+load_desc = prepare_descriptions_for_tokenizer(clean_descriptions_file)
 
 # prepare tokenizer
 tokenized_file = os.environ.get('CAPTION_TOKENIZERS_FILE')
