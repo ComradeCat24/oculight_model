@@ -2,6 +2,7 @@
 import os
 import pandas as pd
 from dotenv import load_dotenv
+from tqdm import tqdm
 load_dotenv()
 from sklearn.model_selection import train_test_split
 # fmt: on
@@ -29,7 +30,8 @@ def split_data(test_size=0.2):
         data, test_size=test_size, random_state=42)
 
     # Save data in separate files
-    for filename, data in [(train_file, train_data), (test_file, test_data)]:
+    print("\n[info] SPLITTING DATASET INTO TRAIN & TEST...")
+    for filename, data in tqdm([(train_file, train_data), (test_file, test_data)]):
         with open(filename, 'w') as file:
             for _, row in data.iterrows():
                 file.write(row['image_name'])

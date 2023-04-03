@@ -281,10 +281,6 @@ if checkpoint_files:
 
     model.load_weights(latest_checkpoint_file)
 
-    # Delete all checkpoint files except for the latest one
-    for checkpoint_file in checkpoint_files[:-1]:
-        os.remove(checkpoint_file)
-
     # Print a message indicating that the training is resuming from a specific epoch
     print("Resuming training from epoch:", initial_epoch + 1)
 else:
