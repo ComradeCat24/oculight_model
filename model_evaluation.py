@@ -2,6 +2,7 @@
 import random
 import os
 import pickle
+import textwrap
 import numpy as np
 from dotenv import load_dotenv
 load_dotenv()
@@ -145,37 +146,39 @@ def generate_desc(model, tokenizer, photo, max_length):
     return final_text
 
 
-def image_caption_plot(actual, predicted, bleu_score=0.0):
+def image_caption_plot(actual, predicted):
 
     # Randomly select 4 key-value pairs
     keys = list(actual.keys())
     random.shuffle(keys)
-    keys = keys[:4]
+    keys = keys[:6]
 
     images_dir = os.environ.get('IMAGE_DIRECTORY_PATH')
-    image_files = [f"{images_dir}/{v}.jpg" for v in keys]
 
-    # Create a grid of subplots with 1 row and 3 columns
-    fig, axs = plt.subplots(len(keys), 1, figsize=(20, 20))
-    fig.subplots_adjust(hspace=0.2)
+    # Create a grid of subplots with 3 rows and 2 columns
+    fig, axs = plt.subplots(3, 2, figsize=(20, 20))
+    fig.subplots_adjust(hspace=0.2, wspace=0.2)
 
     # Loop through each subplot and add an image and two captions
-    for k, img in enumerate(image_files):
+    for k, key in enumerate(keys):
         # Load the image and display it on the subplot
-        image = plt.imread(img)
-        axs[k].imshow(image)
+        image_file = f"{images_dir}/{key}.jpg"
+        image = plt.imread(image_file)
 
-        id = img.split("/")[-1].split(".")[0]
+        # Calculate the row and column index for the subplot
+        row = k // 2
+        col = k % 2
 
-        # Add the actual captions to the subplot on the right
-        caption = "\n".join(actual[id])
-        pred_caption = predicted[id]
+        wrapped_caption = textwrap.wrap(predicted[key], width=40)
 
-        axs[k].text(1.05, 0, f"Actual caption:\n{caption}\n\nPredicted caption: {pred_caption}\n\nBLEU score: {bleu_score:.2f}",
-                    transform=axs[k].transAxes, fontsize=14)
+        # Display the image and predicted caption in the subplot
+        axs[row, col].imshow(image)
+        axs[row, col].text(0.5, -0.1, '\n'.join(wrapped_caption), ha='center',
+                           va='top', bbox=dict(boxstyle='round', facecolor='white', alpha=0.8),
+                           transform=axs[row, col].transAxes, fontsize=14)
+        # axs[row, col].set_title(predicted[key], fontsize=14)
 
     # Save the plot to a file
-
     evaluation_plot = os.environ.get('EVALUATION_PLOT_FILE')
     fig.savefig(evaluation_plot, bbox_inches="tight")
 
@@ -184,24 +187,24 @@ def calculate_bleu_scores(model, descriptions, photos, tokenizer, max_length):
     """
     Calculates BLEU scores for the model's generated descriptions.
     """
-    bleu_weights = [(1.0, 0, 0, 0), (0.5, 0.5, 0, 0),
-                    (0.3, 0.3, 0.3, 0), (0.25, 0.25, 0.25, 0.25)]
+    list_of_references, hypotheses = [], []
     actual, predicted = defaultdict(), defaultdict()
     for i, (key, desc_list) in enumerate(descriptions.items()):
         yhat = generate_desc(model, tokenizer, photos[key], max_length)
         actual[key] = desc_list
         predicted[key] = yhat
+        hypotheses.append(yhat.split())
+        references = []
+        for i in desc_list:
+            words = i.split()
+            references.append(words)
+        list_of_references.append(references)
 
-        # actual[key] = ([d.split() for d in desc_list])
-        # predicted[key] = (yhat.split())
+    bleu_scores = corpus_bleu(list_of_references, hypotheses)
 
-    # print(f"actual: {actual}\n\npredicted: {predicted}\n")
     image_caption_plot(actual, predicted)
-    #     bleu_scores = {f"BLEU-{i+1}": corpus_bleu(actual, predicted, weights=w)
-    #                    for i, w in enumerate(bleu_weights)}
-    #     print(bleu_scores)
-    # return bleu_scores
-    return -1
+
+    return bleu_scores
 
 
 # test dataset
@@ -238,5 +241,6 @@ model_file = os.environ.get('SAVED_MODEL_FILE')
 model = load_model(model_file)
 
 # evaluate model
-calculate_bleu_scores(model, test_descriptions,
-                      test_features, tokenizer, max_length)
+score = calculate_bleu_scores(
+    model, test_descriptions, test_features, tokenizer, max_length)
+print('[info] CORPUS-LEVEL BLEU SCORE: {:.10f}'.format(score))
