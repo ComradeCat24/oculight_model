@@ -107,7 +107,7 @@ def load_clean_descriptions(filename):
 
     for line in doc:
         # split line by white space
-        image_id, image_desc_id, image_desc = line.split(" ")[0].split(".")[0], line.split(" ")[
+        image_id, _, image_desc = line.split(" ")[0].split(".")[0], line.split(" ")[
             1], " ".join(line.split(" ")[2:])
 
         # wrap description in tokens
@@ -119,10 +119,10 @@ def load_clean_descriptions(filename):
     return descriptions
 
 
-def create_tokenizer(descriptions, filename, num_words=None):
+def create_tokenizer(descriptions, filename, vocab_size):
     lines = to_lines(descriptions)
     tokenizer = Tokenizer(
-        num_words=num_words, filters='!"#$%&()*+,-./:;<=>?@[\]^_`{|}~', lower=True)
+        num_words=vocab_size, filters='!"#$%&()*+,-./:;<=>?@[\]^_`{|}~', lower=True)
     tokenizer.fit_on_texts(lines)
 
     # save the tokenizer to a file
@@ -148,4 +148,4 @@ load_desc = load_clean_descriptions(clean_descriptions_file)
 
 # prepare tokenizer
 tokenized_file = os.environ.get('CAPTION_TOKENIZERS_FILE')
-create_tokenizer(load_desc, tokenized_file)
+create_tokenizer(load_desc, tokenized_file, len(vocabulary))
