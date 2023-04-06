@@ -6,13 +6,14 @@ import pickle
 import numpy as np
 from dotenv import load_dotenv
 load_dotenv()
+from datetime import datetime
 import matplotlib.pyplot as plt
 from collections import defaultdict
 from keras.regularizers import l2
 from keras.utils import to_categorical, plot_model, pad_sequences
 from keras.models import Model
 from keras.layers import Input, Dense, LSTM, Embedding, Dropout, Add, BatchNormalization
-from keras.callbacks import ModelCheckpoint, EarlyStopping, LambdaCallback
+from keras.callbacks import ModelCheckpoint, EarlyStopping, LambdaCallback, TensorBoard
 # fmt: on
 
 
@@ -173,10 +174,8 @@ def data_generator(descriptions, photos, tokenizer, max_length, vocab_size, n_it
         random.shuffle(keys)
         for key in keys:
             try:
-                # retrieve the photo feature
-                photo = photos[key]
                 in_img, in_seq, out_word = create_sequences(
-                    tokenizer, max_length, descriptions[key], photo, vocab_size)
+                    tokenizer, max_length, descriptions[key], photos[key], vocab_size)
                 yield [in_img, in_seq], out_word
                 i += 1
             except Exception as e:
@@ -250,6 +249,9 @@ def delete_old_checkpoints(model_checkpoints_dir, keep=2):
                 os.remove(checkpoint_file)
 
 
+logdir = "logs/fit/" + datetime.now().strftime("%Y%m%d-%H%M%S")
+
+
 # create callbacks list
 callbacks_list = [
     # for accuracy
@@ -259,7 +261,8 @@ callbacks_list = [
     LambdaCallback(
         on_epoch_end=lambda epoch, logs: delete_old_checkpoints(
             model_checkpoints_dir, keep=2)
-    )
+    ),
+    TensorBoard(log_dir=logdir, histogram_freq=1)
 ]
 
 
