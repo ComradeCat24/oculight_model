@@ -15,3 +15,5 @@ dataset_splits/*
 model_checkpoints/*
 captioning_model.h5
 logs/*
+
+uploaded_data/*
