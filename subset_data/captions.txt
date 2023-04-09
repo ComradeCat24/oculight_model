@@ -1,0 +1,151 @@
+image_name,comment_number,comment
+4399206310.jpg,0,A man is holding a cigarette outdoors in front of a blue wall with a sink on it .
+4399206310.jpg,1,A middle-aged man stands in front of a blue wall with a cigarette in his hand .
+4399206310.jpg,2,A man standing in front of a blue wall in a brown shirt and white pants .
+4399206310.jpg,3,A man standing in front of a blue wall looking down while smoking .
+4399206310.jpg,4,A scowling man stands in front of a vivid blue wall .
+4726677489.jpg,0,Man in white t-shirt  black shorts  walking along side female with a white tank top  beige shorts  and an older woman with black hair  white shirt  black shorts .
+4726677489.jpg,1,Several individuals are walking along a street in tennis shoes and shorts .
+4726677489.jpg,2,A group of people in white shirts walking along a street .
+4726677489.jpg,3,people are walking down the street .
+4726677489.jpg,4,People are walking in the park .
+3897974076.jpg,0,Two children and a woman climb up the stairs on a metal electric pole-like structure .
+3897974076.jpg,1,Four people climbing metal stairs on a metal structure .
+3897974076.jpg,2,Three people are climbing up an open iron staircase .
+3897974076.jpg,3,Children and their parents climbing a metal tower .
+3897974076.jpg,4,Several people walking up a large tower .
+2873252292.jpg,0,A mountain biker makes his way up a grassy path on his red bicycle .
+2873252292.jpg,1,Someone in a yellow jacket mountain biking on a red bike .
+2873252292.jpg,2,A mountain biker rides up a hill on a red bicycle .
+2873252292.jpg,3,A mountain biker with a backpack crests a ridge .
+2873252292.jpg,4,A man on a bicycle rides on a mountain .
+3952790386.jpg,0,A man in a brown jacket  white shirt  and dark slacks is holding a book with his finger on the page while sitting on a wooden floor  and leaning against a yellow wall with a door on one side and cloths on hangers on the other side .
+3952790386.jpg,1,One man sits on the floor in a suit with a folder with documents on his lap while another man stands just out of eyesight with something in his hands .
+3952790386.jpg,2,A man wearing a suit sits cross-legged in front of a door  looking at a binder of music .
+3952790386.jpg,3,A middle-aged man in a suit sits on the floor against a wall while reviewing his notes .
+3952790386.jpg,4,Well dressed man reads music from a folder in his lap .
+4633772793.jpg,0,A man wearing a goatee and knit cap is next to a woman with a black umbrella in the foreground of a group of attentive people .
+4633772793.jpg,1,A man in a hat stares forward with people behind him and next to him doing the same .
+4633772793.jpg,2,A Muslim is watching an outdoor event next to a woman with a umbrella .
+4633772793.jpg,3,A woman with an umbrella sits next to a man with a beard and a hat .
+4633772793.jpg,4,A man in a colorful beanie hat next to a woman holding an umbrella .
+4509092468.jpg,0,A young man takes a photograph of a gathering on a square in front of a public building with a turret suggesting an Eastern European location .
+4509092468.jpg,1,Man with short hair in a blue jacket taking a photo of a large group of people standing in front of a large illuminated building .
+4509092468.jpg,2,A man using a nice digital camera to snap a photo of a building lit up right before dusk .
+4509092468.jpg,3,A brunette man is taking a picture of a large group of people .
+4509092468.jpg,4,A man taking a picture of a brightly lit building .
+2115849046.jpg,0,A large orange dog runs through the grass by the water where a large boat is sailing in the background .
+2115849046.jpg,1,A brown dog running on shore with a boat in the background .
+2115849046.jpg,2,A dog is running on the grass beside a boat on the river .
+2115849046.jpg,3,The dog is running in the grass next to the water .
+2115849046.jpg,4,A brown dog runs near the water .
+3058247259.jpg,0,A guy wearing a black shirt and jeans  sitting on a couch  with multicolored butterflies on the wall behind him .
+3058247259.jpg,1,A man sitting on a bed focusing on something on his lap with a wall full of paper butterflies behind him .
+3058247259.jpg,2,A man in a black shirt and jeans is working on a blue piece of fabric .
+3058247259.jpg,3,A man in a brown shirt and jeans mends a blanket .
+3058247259.jpg,4,A man repairs his bed sheets .
+3394654132.jpg,0,A woman carrying a black and white dog on a sidewalk in front of parallel parked cars .
+3394654132.jpg,1,A lady stand in front of a red truck holding her dog .
+3394654132.jpg,2,A young lady poses for photo with her dog .
+3394654132.jpg,3,A woman holding a white and black dog .
+3394654132.jpg,4,Woman holding dog on street .
+4699396026.jpg,0,A group of children wearing hats are walking in a line  one of the children is holding a women 's hand with a hat and backpack .
+4699396026.jpg,1,A boy in an orange shirt holds hands with an adult as he walks with a group of other children down a street .
+4699396026.jpg,2,A group of young children in hats walking along a walkway accompanied by two adults .
+4699396026.jpg,3,Two adults are leading about a dozen children down a sidewalk .
+4699396026.jpg,4,Several Asian children walking with two teachers .
+2652974155.jpg,0,A man is holding a fishing pole with a fish that he caught .
+2652974155.jpg,1,A man with a red fishing pole catching a very small fish .
+2652974155.jpg,2,A man in a green shirt catching a fish .
+2652974155.jpg,3,An older man has caught a small fish .
+2652974155.jpg,4,A man catching a fish off a boat .
+4448092863.jpg,0,Six women wearing black jackets and bright red boas smile at the camera .
+4448092863.jpg,1,A group of women are smiling while wearing huge fuzzy scarves .
+4448092863.jpg,2,Women with red scarfs are all out having fun together .
+4448092863.jpg,3,Women wearing Black coats and feathery scarves .
+4448092863.jpg,4,Welcome to our beautiful place and enjoy .
+2403376030.jpg,0,A woman in a black sweatshirt is walking on a dock with a wet dog .
+2403376030.jpg,1,The girl with the black T-shirt is out with a large brown dog .
+2403376030.jpg,2,A woman in a black hooded sweatshirt walking with a large dog .
+2403376030.jpg,3,A woman walks a dog down a wooden path .
+2403376030.jpg,4,A dog and its owner takes a run .
+4833270517.jpg,0,Two men dressed in jeans and coats walking down the street with messenger bags .
+4833270517.jpg,1,A man in brown being followed by a man in black while walking down the street .
+4833270517.jpg,2,Two men in matching jackets and sunglasses walk down a street .
+4833270517.jpg,3,Two men in sunglasses are walking down the street .
+4833270517.jpg,4,Two men wearing sunglasses and walking outside .
+2925163942.jpg,0,A man jogging with his two thumbs up in the air  while making a funny face .
+2925163942.jpg,1,A male runner with a number pinned to his shorts gives the thumbs-up .
+2925163942.jpg,2,A man that appears to be running in a marathon gives us 2 thumbs up .
+2925163942.jpg,3,A man giving two thumbs up as he runs a race .
+2925163942.jpg,4,A man gives a thumbs up sign during his race .
+4819317650.jpg,0,Indoor scene of a woman in yellow with her back to the camera  and a man wearing a bandanna looking at something across the room .
+4819317650.jpg,1,A man in a black shirt is wearing a lime green wristband .
+4819317650.jpg,2,Man with blank headscarf trying to build something .
+4819317650.jpg,3,It appears they are setting up for the meet .
+4819317650.jpg,4,A man in a black bandanna opens a box .
+302983277.jpg,0,A man rides a horse  while mountains and clouds are shown in the background .
+302983277.jpg,1,A man in a yellow jacket is riding a horse through the mountains .
+302983277.jpg,2,A man riding a brown horse poses in front of a mountain scene .
+302983277.jpg,3,Man sitting on brown horse with mountains in background .
+302983277.jpg,4,A man sits on a horse with mountains in the background .
+3640870001.jpg,0,A brown dog is walking in the river with a yellow ring in its mouth .
+3640870001.jpg,1,A dog holding a ring in his mouth is standing in a small river .
+3640870001.jpg,2,The dog runs through the water while holding a yellow ring .
+3640870001.jpg,3,Gray dog in a stream surrounded by trees and shrubs .
+3640870001.jpg,4,A dog with a ring in its mouth is standing in water .
+4433704025.jpg,0,A man in a brown jacket with a Shetland Sheepdog on a leash is extending his hand to a woman in a brown scarf  blue jacket and bright red bag who is holding a white bag .
+4433704025.jpg,1,Two older persons standing on a city sidewalk with a dog on a leash .
+4433704025.jpg,2,An older asian couple walking a collie on a cool day .
+4433704025.jpg,3,Two people are outside walking their dog .
+4433704025.jpg,4,A man and woman with a dog .
+5114891455.jpg,0,Two women wearing matching headdresses sell their good in a street side marketplace .
+5114891455.jpg,1,Two women are sitting against an orange wall behind a few tables covered in food .
+5114891455.jpg,2,Two foreign women  both wearing black  selling different types of foods .
+5114891455.jpg,3,Old women selling vegetables and resting against a wall .
+5114891455.jpg,4,2 older women outside sitting down behind tables of food
+3572144280.jpg,0,A man in black pants climbing a rock wall .
+3572144280.jpg,1,The man is scaling a large brown boulder .
+3572144280.jpg,2,Man without shirt climbing rock face .
+3572144280.jpg,3,A man climbing up on a rock ledge .
+3572144280.jpg,4,A man climbs some rocks .
+640290739.jpg,0,A crowd is watching a group of people in orange shirts put on an exhibition of some sort .
+640290739.jpg,1,An audience is watching people in orange and white outfits pushing shelves on wheels .
+640290739.jpg,2,People in orange shirts roll carts while people watch them .
+640290739.jpg,3,A demonstration in the middle of a crowded airport .
+640290739.jpg,4,A competition with a large crowd watching .
+327298970.jpg,0,A varied group of people are on all fours with a woman laying on top of them ; a man is seen attempting to jump or flip over them .
+327298970.jpg,1,A group of volunteers forming an obstacle  while an acrobat performs a jump over them  and the crowd looks on in anticipation .
+327298970.jpg,2,While in the street  a young man is jumping over a number of other individuals as a crowd looks on .
+327298970.jpg,3,A man is performing acrobatics over a group of people kneeling on the ground .
+327298970.jpg,4,Man does a trick flipping over several people lined up at a street fair .
+1348957576.jpg,0,A blond woman in a white tank top and sunglasses is talking to a man sitting next to boats on a rock surface .
+1348957576.jpg,1,A man and a woman are sitting on the ground and surrounded by boats .
+1348957576.jpg,2,Two people sitting beside a few small boats .
+1348957576.jpg,3,The man and woman are sitting by the boats .
+1348957576.jpg,4,A man and a woman sitting near small boats .
+5920741851.jpg,0,Monk in an orange robe raking leaves and debris on the ground .
+5920741851.jpg,1,You wish your street was as clean as this dudes dirt floor .
+5920741851.jpg,2,A man in an orange draped outfit raking leaves .
+5920741851.jpg,3,A Buddhist monk is mopping the dirty ground .
+5920741851.jpg,4,A man in an orange robe sweeping outside .
+3971881875.jpg,0,A woman with brown hair wearing a white shirt is standing in a doorway surrounded by baskets as a woman in a red shirt passes by .
+3971881875.jpg,1,A woman in a white shirt is standing in a doorway near some large baskets .
+3971881875.jpg,2,A woman in a white shirt stands at the entrance of an ethnic goods shop .
+3971881875.jpg,3,A woman in white stands at the entrance of a shop .
+3971881875.jpg,4,A woman in a white shirt is standing in a doorway .
+4045308081.jpg,0,A child with curly blond-hair looks at another child with long brown hair while sitting on a bench .
+4045308081.jpg,1,Two small children eat ice cream while sitting on a bench .
+4045308081.jpg,2,Two young children are eating ice cream on a park bench .
+4045308081.jpg,3,Two children are eating ice cream on a bench .
+4045308081.jpg,4,Two little girls are eating ice cream .
+8218549120.jpg,0,A smiling young woman in a red t-shirt  sitting on a stool playing a guitar in a room with guitars on the wall .
+8218549120.jpg,1,A woman with wavy hair wears a red t-shirt and black pants while she sits on a stool playing the guitar .
+8218549120.jpg,2,A woman wearing a red shirt and black pants is sitting on a stool and holding a guitar .
+8218549120.jpg,3,A woman is sitting on a stool and playing a guitar with a smile on her face .
+8218549120.jpg,4,Girl playing a guitar to see if it works .
+3319723910.jpg,0,A man wearing a black shirt rides his skateboard along the top of a ledge .
+3319723910.jpg,1,The skateboarder does a trick near a construction site .
+3319723910.jpg,2,A guy on a skateboard is doing a stunt at dusk .
+3319723910.jpg,3,A guy on skateboard  doing a trick .
+3319723910.jpg,4,A skateboarder in mid-jump .
