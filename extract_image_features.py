@@ -51,8 +51,6 @@ def extract_features(directory):
         with open(pickle_file, 'wb') as f:
             pickle.dump(features, f)
 
-    print('Extracted Features: %d' % len(features))
-
 
 directory = os.environ.get('IMAGE_DIRECTORY_PATH')
 extract_features(directory)
