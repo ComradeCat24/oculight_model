@@ -24,8 +24,7 @@ def extract_features(directory):
     # Load existing features from pickle file
     pickle_file = os.environ.get('IMAGE_FEATURES_FILE')
     if os.path.exists(pickle_file):
-        with open(pickle_file, 'rb') as f:
-            features = pickle.load(f)
+        features = pickle.load(open(pickle_file, 'rb'))
     else:
         features = OrderedDict()
 
@@ -48,8 +47,7 @@ def extract_features(directory):
         features.update({image_id: feature})
 
         # Save updated features to pickle file
-        with open(pickle_file, 'wb') as f:
-            pickle.dump(features, f)
+        pickle.dump(features, open(pickle_file, 'wb'))
 
 
 directory = os.environ.get('IMAGE_DIRECTORY_PATH')
