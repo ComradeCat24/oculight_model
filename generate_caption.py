@@ -8,8 +8,8 @@ load_dotenv()
 from collections import defaultdict
 from keras.models import Model, load_model
 from keras.preprocessing.image import ImageDataGenerator
-# from keras.applications.mobilenet_v2 import MobileNetV2, preprocess_input
-from keras.applications.vgg16 import VGG16, preprocess_input
+from keras.applications.mobilenet_v2 import MobileNetV2, preprocess_input
+# from keras.applications.vgg16 import VGG16, preprocess_input
 from keras.utils import pad_sequences, load_img, img_to_array
 # fmt: on
 
@@ -38,9 +38,10 @@ def load_clean_descriptions(filename):
 
 # load photo features
 def extract_photo_features(filename):
-    model = VGG16(include_top=False, input_shape=(224, 224, 3))
+    # model = VGG16(include_top=False, input_shape=(224, 224, 3))
     # OR
-    # model = MobileNetV2(weights='imagenet', include_top=False)
+    model = MobileNetV2(weights='imagenet', input_shape=(
+        224, 224, 3), include_top=False)
 
     model = Model(inputs=model.inputs, outputs=model.layers[-2].output)
 
@@ -48,10 +49,10 @@ def extract_photo_features(filename):
 
     image = load_img(filename, target_size=(224, 224))
     image = img_to_array(image)
-    image = image.reshape(
-        (1, image.shape[0], image.shape[1], image.shape[2]))
-    feature = model.predict(datagen.flow(
-        image), verbose=0).flatten()
+    image = image.reshape((1, image.shape[0], image.shape[1], image.shape[2]))
+    feature = model.predict(datagen.flow(image), verbose=0)
+    feature = feature.reshape(
+        (feature.shape[0], feature.shape[1] * feature.shape[2], feature.shape[3]))
 
     return np.array(feature)
 
@@ -95,7 +96,6 @@ def generate_desc(model, tokenizer, photo, max_length):
     # initialize empty list to keep track of predicted words
     predicted_words = []
     i = 0
-    photo = photo.reshape(1, photo.shape[0])
     # use while loop
     while i < max_length:
         try:
