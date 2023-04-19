@@ -7,12 +7,13 @@ import numpy as np
 from dotenv import load_dotenv
 load_dotenv()
 from datetime import datetime
+from keras.regularizers import l2
 import matplotlib.pyplot as plt
 from collections import defaultdict
 from keras.optimizers import Adam
 from keras.utils import to_categorical, plot_model, pad_sequences
 from keras.models import Model
-from keras.layers import Input, Dense, LSTM, Embedding, Dropout, Concatenate, TimeDistributed, Dot
+from keras.layers import Input, Dense, LSTM, Embedding, Dropout, Add, BatchNormalization, GlobalAveragePooling2D, Flatten
 from keras.callbacks import ModelCheckpoint, EarlyStopping, LambdaCallback, TensorBoard
 # fmt: on
 
@@ -121,35 +122,45 @@ def create_sequences(tokenizer, max_length, desc_list, photo, vocab_size):
 
 
 # define the captioning model
+def define_model(image_shape, vocab_size, max_caption_length):
 
-def define_model(image_feature_shape, vocab_size, max_caption_length):
-    # Define inputs
-    image_features_input = Input(shape=image_feature_shape)     # (49, 1280)
-    caption_input = Input(shape=(max_caption_length,))
+    # Image model
+    input_image = Input(shape=image_shape, name="image_input")
+    gap_layer = GlobalAveragePooling2D()(input_image)
+    flatten_layer = Flatten()(gap_layer)
+    dropout_layer = Dropout(0.5)(flatten_layer)
+    bn_layer = BatchNormalization()(dropout_layer)
+    dense_layer1 = Dense(256, activation='relu',
+                         kernel_regularizer=l2(0.01))(bn_layer)
+    dropout_layer = Dropout(0.5)(dense_layer1)
+    bn_layer = BatchNormalization()(dropout_layer)
+    dense_layer2 = Dense(256, activation='relu',
+                         kernel_regularizer=l2(0.01))(bn_layer)
+    dropout_layer = Dropout(0.5)(dense_layer2)
+    bn_layer = BatchNormalization()(dropout_layer)
+    image_features = Dense(256, activation='relu',
+                           name="image_features")(bn_layer)
 
     # Caption model
-    caption_embedding = Embedding(
-        input_dim=vocab_size, output_dim=256, mask_zero=True)(caption_input)
-    caption_lstm = LSTM(256, return_sequences=True)(caption_embedding)
-    caption_dropout = Dropout(0.5)(caption_lstm)
+    input_caption = Input(shape=(max_caption_length,), name="caption_input")
+    embedding_layer = Embedding(vocab_size, 64, mask_zero=True)(input_caption)
+    dropout_layer = Dropout(0.5)(embedding_layer)
+    bn_layer = BatchNormalization()(dropout_layer)
+    caption_features = LSTM(256, name="caption_features")(bn_layer)
 
-    # Attention mechanism
-    dense1 = Dense(256, activation='tanh')
-    dense2 = Dense(1, activation='softmax')
-    attention_scores = TimeDistributed(dense2)(
-        TimeDistributed(dense1)(caption_dropout))
-    image_attention = Dot(axes=(1, 1))(
-        [attention_scores, image_features_input])
-    caption_attention = Concatenate()([image_attention, caption_dropout])
-    caption_dense = TimeDistributed(
-        Dense(vocab_size, activation='softmax'))(caption_attention)
+    # Combined model
+    decoder = Add()([image_features, caption_features])
+    dense_layer1 = Dense(256, activation='relu')(decoder)
+    dropout_layer = Dropout(0.5)(dense_layer1)
+    bn_layer = BatchNormalization()(dropout_layer)
+    output = Dense(vocab_size, activation='softmax', name="output")(bn_layer)
 
     # Create and compile the model
-    model = Model(inputs=[image_features_input,
-                  caption_input], outputs=caption_dense)
-    optimizer = Adam(lr=0.001)
-    model.compile(loss='categorical_crossentropy', optimizer=optimizer)
+    model = Model(inputs=[input_image, input_caption], outputs=output)
+    model.compile(loss='categorical_crossentropy',
+                  optimizer='adam', metrics=['accuracy'])
 
+    # Summarize the model
     model.summary()
     # plot_model(model, to_file='model.png', show_shapes=True)
 
@@ -196,16 +207,15 @@ print('Vocabulary Size: %d' % vocab_size)
 
 # determine the maximum sequence length
 max_length = max_length(load_clean_descriptions(descriptions_file))
-print('Description Length: %d' % max_length)
+print(f'Max Caption length: shape=({max_length},)')
 
 # photo features
 pickle_file = os.environ.get('IMAGE_FEATURES_FILE')
 train_features = load_photo_features(pickle_file, train)
-print('Photos: train=%d' % len(train_features))
 # Get the key-value pair for the first item in the dictionary
 _, image_feature = next(iter(train_features.items()))
-feature_shape = np.array(image_feature).shape
-print('Photos: shape=%d' % feature_shape)
+feature_shape = image_feature.shape
+print(f'Photos: shape={feature_shape}')
 
 # fit model
 
@@ -241,7 +251,7 @@ def delete_old_checkpoints(model_checkpoints_dir, keep=2):
                 os.remove(checkpoint_file)
 
 
-logdir = "logs/fit/" + datetime.now().strftime("%Y%m%d-%H%M%S")
+# logdir = "logs/fit/" + datetime.now().strftime("%Y%m%d-%H%M%S")
 
 
 # create callbacks list
@@ -254,7 +264,7 @@ callbacks_list = [
         on_epoch_end=lambda epoch, logs: delete_old_checkpoints(
             model_checkpoints_dir, keep=2)
     ),
-    TensorBoard(log_dir=logdir, histogram_freq=1)
+    # TensorBoard(log_dir=logdir, histogram_freq=1)
 ]
 
 
