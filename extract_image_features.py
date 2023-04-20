@@ -17,6 +17,11 @@ from keras.applications.vgg16 import VGG16, preprocess_input
 def extract_features(directory):
 
     model = VGG16(include_top=False, input_shape=(224, 224, 3))
+
+    # Freeze the weights of the MobileNetV2 layer
+    for layer in model.layers:
+        layer.trainable = False
+
     model = Model(inputs=model.inputs, outputs=model.layers[-2].output)
 
     datagen = ImageDataGenerator(preprocessing_function=preprocess_input)
