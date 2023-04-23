@@ -8,20 +8,21 @@ from keras.models import Model
 from collections import OrderedDict
 from keras.utils import load_img, img_to_array
 from keras.preprocessing.image import ImageDataGenerator
-from keras.applications.vgg16 import VGG16, preprocess_input
-# from keras.applications.mobilenet_v2 import MobileNetV2, preprocess_input
+# from keras.applications.vgg16 import VGG16, preprocess_input
+from keras.applications.mobilenet_v2 import MobileNetV2, preprocess_input
 # fmt: on
 
 
 def extract_features(directory, batch_size=500):
 
-    model = VGG16(include_top=False, input_shape=(224, 224, 3))
+    # model = VGG16(include_top=False, input_shape=(224, 224, 3))
     # OR
-    # model = MobileNetV2(weights='imagenet', input_shape=(224, 224, 3), include_top=False)
+    model = MobileNetV2(weights='imagenet', input_shape=(224, 224, 3), include_top=False)
 
     # Freeze the weights of the MobileNetV2 layer
     for layer in model.layers:
         layer.trainable = False
+
     model = Model(inputs=model.inputs, outputs=model.layers[-2].output)
     model.summary()
 

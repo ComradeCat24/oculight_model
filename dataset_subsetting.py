@@ -9,7 +9,7 @@ images_dir = os.path.join(datset_dir, "images")
 captions_path = os.path.join(datset_dir, "captions.txt")
 
 # Set the number of captions you want to select
-num_captions = 30
+num_captions = 100
 
 # Read the captions file into a list
 with open(captions_path, "r") as f:

@@ -8,7 +8,6 @@ dataset_flickr8k/*
 /oculight_env/
 
 # output files 
-/subset_data/*
 image_features.pkl
 preprocessed_captions.txt
 caption_tokenizers.pkl
