@@ -1,6 +1,7 @@
 # Dataset
 archive.zip
 dataset/*
+dataset_flickr8k/*
 
 # Python env
 /venv/

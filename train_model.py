@@ -253,7 +253,8 @@ def delete_old_checkpoints(model_checkpoints_dir, keep=2):
 # create callbacks list
 callbacks_list = [
     # for accuracy
-    EarlyStopping(monitor='accuracy', mode='max', patience=3),
+    EarlyStopping(monitor='accuracy', mode='max',
+                  patience=5, restore_best_weights=True),
     ModelCheckpoint(filepath=os.path.join(model_checkpoints_dir,
                     'weights.{epoch:02d}-{accuracy:.2f}.hdf5'), save_best_only=True, save_weights_only=True, monitor='accuracy', mode='max'),
     LambdaCallback(

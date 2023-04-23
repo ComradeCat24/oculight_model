@@ -1,6 +1,5 @@
 # fmt: off
 import os
-import numpy as np
 import pickle 
 from dotenv import load_dotenv
 load_dotenv()
@@ -14,15 +13,17 @@ from keras.applications.vgg16 import VGG16, preprocess_input
 # fmt: on
 
 
-def extract_features(directory):
+def extract_features(directory, batch_size=500):
 
     model = VGG16(include_top=False, input_shape=(224, 224, 3))
+    # OR
+    # model = MobileNetV2(weights='imagenet', input_shape=(224, 224, 3), include_top=False)
 
     # Freeze the weights of the MobileNetV2 layer
     for layer in model.layers:
         layer.trainable = False
-
     model = Model(inputs=model.inputs, outputs=model.layers[-2].output)
+    model.summary()
 
     datagen = ImageDataGenerator(preprocessing_function=preprocess_input)
 
@@ -33,29 +34,37 @@ def extract_features(directory):
     else:
         features = OrderedDict()
 
-    print("\n[info] STARTING EXTRACTING FEATURES...")
-    for name in tqdm(os.listdir(directory)):
-        filename = directory + '/' + name
+    tqdm.write("\n[info] STARTING EXTRACTING FEATURES...")
+    for i, name in enumerate(tqdm(os.listdir(directory))):
+        filename = os.path.join(directory, name)
         image_id = name.split(".")[0]
 
         # Check if image_id is already present in the features OrderedDict
         if image_id in features:
+            # tqdm.write(f'[info] SKIPPING IMAGE {name} AS ITS FEATURES ARE ALREADY EXTRACTED.')
             continue
 
         image = load_img(filename, target_size=(224, 224))
         image = img_to_array(image)
         image = image.reshape(
-            (1, image.shape[0], image.shape[1], image.shape[2]))
+            (1, image.shape[0], image.shape[1], image.shape[2]))  # (1, 224, 224, 3)
         feature = model.predict(datagen.flow(
-            image, batch_size=32), verbose=0).flatten()
+            image), verbose=0)  # (1, 14, 14, 512)
+
+        feature = feature.flatten()  # (100352)
+        # OR
+        # feature = feature.reshape((feature.shape[0], feature.shape[1] * feature.shape[2], feature.shape[3]))  # (1, 196, 512)
 
         features.update({image_id: feature})
 
-        # Save updated features to pickle file
-        pickle.dump(features, open(pickle_file, 'wb'))
+        if i % batch_size == 0 or i == len(os.listdir(directory))-1:
+            tqdm.write(
+                f"\n[info] IMAGE FEATURES CHECKPOINT SAVING AT {len(features)}")
+            # Save updated features to pickle file after processing every batch of images or after processing the last image
+            pickle.dump(features, open(pickle_file, 'wb'))
 
 
 directory = os.environ.get('IMAGE_DIRECTORY_PATH')
 extract_features(directory)
 
-print("\n[info] IMAGE FEATURES FILE SAVED SUCCESSFULLY")
+tqdm.write("\n[info] IMAGE FEATURES FILE SAVED SUCCESSFULLY")
