@@ -14,5 +14,6 @@ caption_tokenizers.pkl
 dataset_splits/*
 model_checkpoints/*
 captioning_model.h5
+captioning_model_wo_attention.h5
 
 logs/*
